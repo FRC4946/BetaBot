@@ -22,7 +22,7 @@ public class BetaRobot extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        
+        int a = 0;
     }
 
     /**
