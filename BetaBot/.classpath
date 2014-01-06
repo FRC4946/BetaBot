@@ -3,5 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="/home/bart/sunspotfrcsdk_raw/lib/WPILibJ/classes.jar"/>
 	<classpathentry kind="lib" path="/home/bart/.eclipse/org.eclipse.platform_3.8_155965261/plugins/edu.wpi.first.javadev.sunspotfrcsdk_1.0.7.1/sunspotfrcsdk/lib/squawk_device.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Desktop/eclipse-java-kepler-SR1-win32-x86_64/eclipse/plugins/edu.wpi.first.javadev.sunspotfrcsdk_1.0.7.1/sunspotfrcsdk/lib/squawk_device.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Desktop/eclipse-java-kepler-SR1-win32-x86_64/eclipse/plugins/edu.wpi.first.javadev.sunspotfrcsdk_1.0.7.1/sunspotfrcsdk/lib/WPILibJ/classes.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

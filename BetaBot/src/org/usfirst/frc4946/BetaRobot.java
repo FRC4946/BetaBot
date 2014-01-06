@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj.SimpleRobot;
  */
 public class BetaRobot extends SimpleRobot {
 	
-	RobotDrive m_robotDrive = new RobotDrive(RobotConstants.PWM_MOTOR_LEFT, RobotConstants.PWM_MOTOR_RIGHT);
+	RobotDrive m_robotDrive = new RobotDrive(RobotConstants.PWM_MOTOR_LEFT_FRONT, RobotConstants.PWM_MOTOR_LEFT_REAR, RobotConstants.PWM_MOTOR_RIGHT_FRONT, RobotConstants.PWM_MOTOR_RIGHT_REAR);
+	
 	
 	Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
 	Joystick m_taskJoystick = new Joystick(RobotConstants.JOYSTICK_RIGHT);
@@ -37,7 +38,7 @@ public class BetaRobot extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        
+            	
     }
 
     /**
@@ -64,14 +65,8 @@ public class BetaRobot extends SimpleRobot {
 
 	private void operatorTaskSystem() {
 		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-		//Get seems to return -1 to 1.
-		double x = m_taskJoystick.getX();
-		double y = m_taskJoystick.getY();
 		
-		//Expects a value of 0-1
-		// Shift over by 1 and bring to range
-		m_leftServo.setPosition((x+1.0)/2.0);
-		m_rightServo.setPosition((y+1.0)/2.0);
+		//Code for the 'Task' joystick will go here
 	}
 
 	private void operatorDriveSystem() {
