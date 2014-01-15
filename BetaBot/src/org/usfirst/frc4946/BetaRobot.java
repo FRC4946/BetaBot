@@ -7,7 +7,6 @@
 
 package org.usfirst.frc4946;
 
-
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
@@ -29,8 +28,6 @@ public class BetaRobot extends SimpleRobot {
 	Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
 	Joystick m_taskJoystick = new Joystick(RobotConstants.JOYSTICK_RIGHT);
 	
-	PWM m_leftServo = new PWM(RobotConstants.PWM_LEFT_SERVO);
-	PWM m_rightServo = new PWM(RobotConstants.PWM_RIGHT_SERVO);
 	
 	DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
 	
@@ -40,7 +37,8 @@ public class BetaRobot extends SimpleRobot {
     public void autonomous() {
             	
     }
-
+    
+    
     /**
      * This function is called once each time the robot enters operator control.
      */
@@ -50,6 +48,9 @@ public class BetaRobot extends SimpleRobot {
     	m_driverStation.updateLCD();
     	
     	while (isOperatorControl() && isEnabled()){
+    		
+    		buttonTest();
+    		
     		//Call the drive oriented code
     		operatorDriveSystem();
     		
@@ -63,6 +64,21 @@ public class BetaRobot extends SimpleRobot {
     	
     }
 
+
+    public void buttonTest() {
+    	
+    		for(int i=0;i<11;i++)
+    		{
+				if (m_driveJoystick.getRawButton(i)){
+	    			
+	    			m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Button is "+i+"  ");
+	    			m_driverStation.updateLCD();
+	    		
+	    		}
+    		}
+    		
+    }
+    
 	private void operatorTaskSystem() {
 		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 		
@@ -70,12 +86,27 @@ public class BetaRobot extends SimpleRobot {
 	}
 
 	private void operatorDriveSystem() {
-		//m_robotDrive.arcadeDrive(m_DriveJoystick); 
+		//m_robotDrive.arcadeDrive(m_driveJoystick); 
 		
 		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 		//Same as above, but reduce either turning, or maximum speed depending on the trigger.
+		
+		
 		double outputMagnitude = m_driveJoystick.getY();
 		double curve = m_driveJoystick.getX();
+				
+		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
+		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");
+		m_driverStation.updateLCD();
+				
+		//Check the joystick's deadzone
+		if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
+			outputMagnitude = 0.0;
+		}
+		if(Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
+			curve = 0.0;
+		}
+		
 		
 		//Check the trigger
 		if( m_driveJoystick.getTrigger() ){
@@ -88,7 +119,11 @@ public class BetaRobot extends SimpleRobot {
 			
 		}
 		
-		m_robotDrive.arcadeDrive(outputMagnitude, curve, true);
+		
+		
+		
+		m_robotDrive.arcadeDrive(outputMagnitude, 0, true);
+		
 		
 	}
 }
