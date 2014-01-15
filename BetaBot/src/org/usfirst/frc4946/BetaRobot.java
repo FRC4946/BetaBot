@@ -122,7 +122,7 @@ public class BetaRobot extends SimpleRobot {
 		
 		
 		
-		m_robotDrive.arcadeDrive(outputMagnitude, 0, true);
+		m_robotDrive.arcadeDrive(outputMagnitude, curve, true);
 		
 		
 	}
