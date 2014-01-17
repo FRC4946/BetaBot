@@ -67,7 +67,7 @@ public class BetaRobot extends SimpleRobot {
 
     public void buttonTest() {
     	
-    		for(int i=0;i<11;i++)
+    		for(int i=0;i<20;i++)
     		{
 				if (m_driveJoystick.getRawButton(i)){
 	    			
@@ -106,6 +106,17 @@ public class BetaRobot extends SimpleRobot {
 		if(Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
 			curve = 0.0;
 		}
+		
+
+		
+		/*** IF THAT DOES NOT WORK ***
+		 * 
+		 *if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE && Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
+		 *	m_robotDrive.arcadeDrive(0, 0, true);
+		 *}
+		 *
+		 *
+		 */
 		
 		
 		//Check the trigger
