@@ -63,21 +63,6 @@ public class BetaRobot extends SimpleRobot {
     	m_driverStation.updateLCD();
     	
     }
-
-
-    public void buttonTest() {
-    	
-    		for(int i=0;i<20;i++)
-    		{
-				if (m_driveJoystick.getRawButton(i)){
-	    			
-	    			m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Button is "+i+"  ");
-	    			m_driverStation.updateLCD();
-	    		
-	    		}
-    		}
-    		
-    }
     
 	private void operatorTaskSystem() {
 		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
@@ -98,42 +83,23 @@ public class BetaRobot extends SimpleRobot {
 		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
 		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");
 		m_driverStation.updateLCD();
-				
-		//Check the joystick's deadzone
-		if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
-			outputMagnitude = 0.0;
-		}
-		if(Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
-			curve = 0.0;
-		}
-		
-
-		
-		/*** IF THAT DOES NOT WORK ***
-		 * 
-		 *if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE && Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
-		 *	m_robotDrive.arcadeDrive(0, 0, true);
-		 *}
-		 *
-		 *
-		 */
 		
 		
 		//Check the trigger
 		if( m_driveJoystick.getTrigger() ){
 			//allow fast speed, but reduce turning
-			curve *= 0.25;
+			curve *= 0.4;
 			
 		}else{
 			//Drive slow if the trigger is not down
-			outputMagnitude *= 0.25;
+			outputMagnitude *= 0.4;
 			
 		}
 		
 		
 		
 		
-		m_robotDrive.arcadeDrive(outputMagnitude, curve, true);
+		m_robotDrive.arcadeDrive(outputMagnitude, curve * -1, true);
 		
 		
 	}
