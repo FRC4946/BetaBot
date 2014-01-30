@@ -17,4 +17,14 @@ public class RobotConstants {
         public static final int PWM_RIGHT_SERVO = 10;
         
         
+        //*** Hypothetical ***\\
+        
+        public static final int COMPRESSOR_PRESSURE_SWITCH = 1; // On the GPIO header of the digital sidecar
+        public static final int COMPRESSOR_RELAY = 1;			// On the relay header of the digital sidecar
+        
+        public static final int BALL_LIFT_VALVE_RELAY = 2; // The valve for the ball lifter. (Purple in the diagram)
+        
+        public static final int EXTEND_ARM_VALVE_RELAY = 3; //The valve that extends the pistons on the intake arm
+        public static final int RETRACT_ARM_VALVE_RELAY = 4; //The valve that retracts the pistons on the intake arm
+        
 }
