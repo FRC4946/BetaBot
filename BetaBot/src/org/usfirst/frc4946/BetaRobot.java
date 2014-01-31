@@ -44,7 +44,6 @@ public class BetaRobot extends SimpleRobot {
 	
 	Solenoid m_liftBallSolenoid = new Solenoid(RobotConstants.BALL_LIFT_VALVE_RELAY);
 	
-	// Again, should these be combined into one?
 	Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
 	Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 	
@@ -67,6 +66,19 @@ public class BetaRobot extends SimpleRobot {
      */
     public void autonomous() {
             	
+    	m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering autonomous");
+    	m_driverStation.updateLCD();
+    	
+    	
+    	//TODO: The autonomous stuff
+    	// Check for hotzone?
+    	// Aim towards hotzone?
+    	// Shoot the ball
+    	// Move forwards
+    	
+    	m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Finished auto, waiting");
+    	m_driverStation.updateLCD();
+    	
     }
     
     
@@ -102,15 +114,15 @@ public class BetaRobot extends SimpleRobot {
 		
 		// If the trigger is down, lift the ball into the rollers
 		if(m_taskJoystick.getTrigger()){
-			m_liftBallSolenoid.set(True);
+			m_liftBallSolenoid.set(true);
 		}
 		else {
-			m_liftBallSolenoid.set(False);
+			m_liftBallSolenoid.set(false);
 		}
 		
 		
 		// If the 1st button is pushed, extend grabber
-		if(m_taskJoystick.getButton(1)){
+		if(m_taskJoystick.getRawButton(1)){
 			m_extendGrabberSolenoid.set(true);
 		}
 		else{
@@ -137,6 +149,8 @@ public class BetaRobot extends SimpleRobot {
 		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
 		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");
 		m_driverStation.updateLCD();
+		
+		
 		/*		
 		//Check the joystick's deadzone
 		if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
