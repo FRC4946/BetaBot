@@ -9,4 +9,5 @@ Features:
   
 Special in this branch:
   - A 4 motor configuration of the RobotDrive
-  - A deadzone
+  - A potential pneumatics setup
+  - Some TODOs, and a layout of what our autonomus function should do
