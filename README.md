@@ -9,4 +9,3 @@ Features:
   
 Special in this branch:
   - A 4 motor configuration of the RobotDrive
-  - A deadzone
