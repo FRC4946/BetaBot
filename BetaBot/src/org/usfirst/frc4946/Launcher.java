@@ -9,8 +9,13 @@ public class Launcher {
 	private SpeedController m_launcherBottomController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
 	
 	private double speed = 0.0;
+	private boolean motorsAreEnabled = false;
 	
-	
+	public void toggleEnabled(){
+		motorsAreEnabled = !motorsAreEnabled;
+		
+		setEnabled(motorsAreEnabled);
+	}
 	
 	
 	/**
@@ -20,6 +25,8 @@ public class Launcher {
 	 * @param isEnabled Whether to enable the motors or not.
 	 */
 	public void setEnabled(boolean isEnabled){
+		
+		motorsAreEnabled = isEnabled;
 		
 		if(isEnabled){
 			m_launcherTopController.set(speed);

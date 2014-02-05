@@ -14,9 +14,15 @@ public class IntakeArm {
 	private Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 	
 	private double speed = 0.0;
+	private boolean motorsAreEnabled = false;
+	private boolean armIsExtended = false;
 	
 	
-	
+	public void toggleExtended(){
+		armIsExtended = !armIsExtended;
+		
+		setExtended(armIsExtended);
+	}
 	
 	/**
 	 * Extend or retract the arm.
@@ -24,6 +30,8 @@ public class IntakeArm {
 	 * @param isExtended Whether to extend or retract the arm.
 	 */
 	public void setExtended(boolean isExtended){
+				
+		armIsExtended = isExtended;
 		
 		if (isExtended){
 			m_extendGrabberSolenoid.set(true);
@@ -56,6 +64,13 @@ public class IntakeArm {
 	}
 	
 	
+	
+	public void toggleEnabled(){
+		motorsAreEnabled = !motorsAreEnabled;
+		
+		setEnabled(motorsAreEnabled);
+	}
+	
 	/**
 	 * Start or stop the motors.
 	 * If the speed has been changed, call setEnabled(true) to update the motors.
@@ -64,6 +79,8 @@ public class IntakeArm {
 	 */
 	public void setEnabled(boolean isEnabled){
 				
+		motorsAreEnabled = isEnabled;
+		
 		if(isEnabled){
 			m_intakeController.set(1.0);
 			}

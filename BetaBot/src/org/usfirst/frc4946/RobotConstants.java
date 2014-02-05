@@ -38,5 +38,6 @@ public class RobotConstants {
         // ** Buttons ** \\
         
         public static int JOYSTICK_BUTTON_INTAKE = 1;
+        public static int JOYSTICK_BUTTON_LAUNCH = 2;
         
 }

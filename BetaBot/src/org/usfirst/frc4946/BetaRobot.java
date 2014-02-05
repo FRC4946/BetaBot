@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -44,8 +45,7 @@ public class BetaRobot extends SimpleRobot {
 		
 	
 	boolean buttonIntakeIsDown = false;
-	boolean isExtended = false;
-	
+	boolean buttonLaunchIsDown = false;	
 	
 	
 	
@@ -156,7 +156,24 @@ public class BetaRobot extends SimpleRobot {
 		
 		// If the trigger is down, lift the ball into the rollers		
 		m_loader.setLiftBall(m_taskJoystick.getTrigger());
-
+		
+		
+		
+		
+		// If the launch button is pressed, get ready for its release
+		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH)){
+			buttonLaunchIsDown = true;
+		}
+		
+		// If the launch button is released, toggle the state of the solenoid
+		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH) &&
+				buttonLaunchIsDown == true){
+			
+			buttonLaunchIsDown = false;
+			m_launcher.toggleEnabled();
+		}
+		
+		
 		
 		
 		
@@ -168,11 +185,10 @@ public class BetaRobot extends SimpleRobot {
 		// If the intake button is released, toggle the state of the solenoid
 		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE) &&
 				buttonIntakeIsDown == true){
+			
 			buttonIntakeIsDown = false;
-			
-			
-			isExtended = !isExtended;
-			m_intakeArm.setExtended(isExtended);
+			m_intakeArm.toggleEnabled();
+			m_intakeArm.toggleExtended();
 		}
 	}
 
