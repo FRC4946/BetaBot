@@ -10,6 +10,8 @@ public class RobotConstants {
         
         final static int PWM_MOTOR_LAUNCHER_TOP = 5;
         final static int PWM_MOTOR_LAUNCHER_BOTTOM = 6;
+        
+        final static int PWM_MOTOR_INTAKE = 7;
 
         
         
@@ -18,9 +20,6 @@ public class RobotConstants {
         
         public static final double DRIVE_JOYSTICK_DEADZONE = 0.1;
         public static final double TASK_JOYSTICK_DEADZONE = 0.1;
-        
-        public static final int PWM_LEFT_SERVO = 9;
-        public static final int PWM_RIGHT_SERVO = 10;
         
         
         //*** Hypothetical ***\\
