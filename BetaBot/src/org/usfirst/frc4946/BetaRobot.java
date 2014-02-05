@@ -36,7 +36,7 @@ public class BetaRobot extends SimpleRobot {
 	SpeedController m_launcherBottomController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
 
 	
-	Joystick m_driveJoystick =a new Joystick(RobotConstants.JOYSTICK_LEFT);
+	Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
 	Joystick m_taskJoystick = new Joystick(RobotConstants.JOYSTICK_RIGHT);
 	
 	DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
@@ -197,6 +197,24 @@ public class BetaRobot extends SimpleRobot {
 			Timer.delay(0.1);
 			m_extendGrabberSolenoid.set(false);
 			m_retractGrabberSolenoid.set(false);
+			
+			
+			
+			
+			// Another way of doing the above, not sure which is better. This one will, however, make the solenoid stay powered, which is a waste but I don't think it will cause any problems
+			
+			/*
+			if (isExtended){
+				m_retractGrabberSolenoid.set(false);
+				Timer.delay(0.1);
+				m_extendGrabberSolenoid.set(true);
+			}
+			else{
+				m_extendGrabberSolenoid.set(false);
+				Timer.delay(0.1);
+				m_retractGrabberSolenoid.set(true);
+			}
+			*/
 		}
 	}
 
