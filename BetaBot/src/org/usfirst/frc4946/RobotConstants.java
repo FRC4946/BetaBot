@@ -6,6 +6,12 @@ public class RobotConstants {
         final static int PWM_MOTOR_RIGHT_FRONT = 3;
         final static int PWM_MOTOR_RIGHT_REAR = 4;
         
+        //*** Hypothetical ***\\
+        
+        final static int PWM_MOTOR_LAUNCHER_TOP = 5;
+        final static int PWM_MOTOR_LAUNCHER_BOTTOM = 6;
+
+        
         
         public static final int JOYSTICK_LEFT = 1;
         public static final int JOYSTICK_RIGHT = 2;
@@ -26,5 +32,12 @@ public class RobotConstants {
         
         public static final int EXTEND_ARM_VALVE_RELAY = 3; //The valve that extends the pistons on the intake arm
         public static final int RETRACT_ARM_VALVE_RELAY = 4; //The valve that retracts the pistons on the intake arm
+        
+        
+        
+        
+        // ** Buttons ** \\
+        
+        public static int JOYSTICK_BUTTON_INTAKE = 1;
         
 }

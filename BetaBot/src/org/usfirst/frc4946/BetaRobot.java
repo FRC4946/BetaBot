@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,7 +31,12 @@ public class BetaRobot extends SimpleRobot {
 	RobotDrive m_robotDrive = new RobotDrive(RobotConstants.PWM_MOTOR_LEFT_FRONT, RobotConstants.PWM_MOTOR_LEFT_REAR, RobotConstants.PWM_MOTOR_RIGHT_FRONT, RobotConstants.PWM_MOTOR_RIGHT_REAR);
 	
 	
-	Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
+	// These are motors for the launcher (Well really they're the speed controllers <i>attached</i> to the motors, but close enough)
+	SpeedController m_launcherTopController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
+	SpeedController m_launcherBottomController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
+
+	
+	Joystick m_driveJoystick =a new Joystick(RobotConstants.JOYSTICK_LEFT);
 	Joystick m_taskJoystick = new Joystick(RobotConstants.JOYSTICK_RIGHT);
 	
 	DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
@@ -49,11 +57,14 @@ public class BetaRobot extends SimpleRobot {
 	
 	
 	
+	boolean buttonIntakeIsDown = false;
+	
+	
 	
 	
 	
 	/**
-	 * Our constructor for the BetaRobot class
+	 * Our constructor for the BetaRobot class.
 	 */
 	public BetaRobot(){
 		
@@ -75,6 +86,41 @@ public class BetaRobot extends SimpleRobot {
     	// Aim towards hotzone?
     	// Shoot the ball
     	// Move forwards
+    	
+    	
+    	
+    	/* 
+    	
+    	//TODO: Hotzone stuff?
+    	
+    	
+    	// Shoot the ball
+    	
+    	m_launcherTopController.set(1.0);
+    	m_launcherBottomController.set(1.0);
+    	
+    	Timer.delay(0.1);
+    	
+    	m_liftBallSolenoid.set(true);
+    	
+    	Timer.delay(0.8);
+    	
+    	m_liftBallSolenoid.set(false);
+    	
+    	
+    	
+    	// Move forwards
+    	
+    	m_robotDrive.drive(0.5, 0);
+    	
+    	Timer.delay(3);
+    	
+    	m_robotDrive.drive(0,0);
+    	
+
+    	
+    	*/
+    	
     	
     	m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Finished auto, waiting");
     	m_driverStation.updateLCD();
@@ -107,6 +153,11 @@ public class BetaRobot extends SimpleRobot {
     }
 
     
+    
+    /**
+     * This function contains code pertaining to the task joystick.
+     * It is called once every loop of the operator control cycle.
+     */
 	private void operatorTaskSystem() {
 		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 		
@@ -121,21 +172,38 @@ public class BetaRobot extends SimpleRobot {
 		}
 		
 		
-		// If the 1st button is pushed, extend grabber
-		if(m_taskJoystick.getRawButton(1)){
-			m_extendGrabberSolenoid.set(true);
-		}
-		else{
-			m_retractGrabberSolenoid.set(true);
+		
+		// If the intake button is pressed, get ready for its release
+		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE)){
+			buttonIntakeIsDown = true;
 		}
 		
-		m_extendGrabberSolenoid.set(false);
-		m_retractGrabberSolenoid.set(false);
-		
-		
-		
+		// If the intake button is released, toggle the state of the solenoid
+		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE) &&
+				buttonIntakeIsDown == true){
+			buttonIntakeIsDown = false;
+			
+			
+			
+			isExtended = !isExtended;
+			
+			if (isExtended){
+				m_extendGrabberSolenoid.set(true);
+			}
+			else{
+				m_retractGrabberSolenoid.set(true);
+			}
+			
+			Timer.delay(0.1);
+			m_extendGrabberSolenoid.set(false);
+			m_retractGrabberSolenoid.set(false);
+		}
 	}
 
+    /**
+     * This function contains code pertaining to the drive joystick.
+     * It is called once every loop of the operator control cycle.
+     */
 	private void operatorDriveSystem() {
 		//m_robotDrive.arcadeDrive(m_driveJoystick); 
 		
