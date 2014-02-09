@@ -43,12 +43,14 @@ public class RobotConstants {
         
         public static int JOYSTICK_BUTTON_INTAKE = 2;
         public static int JOYSTICK_BUTTON_LAUNCH = 3;
-        public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 3;
-        public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 4;        
+        public static int JOYSTICK_BUTTON_INTAKE_ROLLER = 4;
+        public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 5;
+        public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 6;        
         
         
         
         //*** Misc ***\\
         
         public static int SOLENOID_COOLDOWN_TIME = 1000;
+        public static int CONSOLE_UPDATE_TIME = 500;
 }

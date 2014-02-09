@@ -131,9 +131,11 @@ public class BetaRobot extends SimpleRobot {
 
     	
     	m_primaryCompressor.start();
+    	int m_cycleNumber = 0;
     	
     	while (isOperatorControl() && isEnabled()){
     		
+    		m_cycleNumber ++;
     		
     		//Call the drive oriented code
     		operatorDriveSystem();
@@ -141,7 +143,10 @@ public class BetaRobot extends SimpleRobot {
     		//Call the task oriented code
     		operatorTaskSystem();
     		
-    		m_driverStation.updateLCD();
+    		if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0){
+        		m_driverStation.updateLCD();
+        		m_cycleNumber = 0;
+    		}
     		
     	}
     	
