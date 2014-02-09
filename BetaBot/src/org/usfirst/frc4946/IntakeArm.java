@@ -7,13 +7,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class IntakeArm {
 
-	private SpeedController m_intakeController = new Jaguar(
-			RobotConstants.PWM_MOTOR_INTAKE);
+	private SpeedController m_intakeController = new Jaguar(RobotConstants.PWM_MOTOR_INTAKE);
 
-	private Solenoid m_extendGrabberSolenoid = new Solenoid(
-			RobotConstants.EXTEND_ARM_VALVE_RELAY);
-	private Solenoid m_retractGrabberSolenoid = new Solenoid(
-			RobotConstants.RETRACT_ARM_VALVE_RELAY);
+	private Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
+	private Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 
 	private double speed = 0.0;
 	private boolean motorsAreEnabled = false;
@@ -21,6 +18,9 @@ public class IntakeArm {
 
 	private int m_solenoidCounter = 0;
 
+	
+	
+	
 	public void toggleExtended() {
 		armIsExtended = !armIsExtended;
 
@@ -60,6 +60,12 @@ public class IntakeArm {
 
 		}
 	}
+	
+	public boolean getExtendedState(){
+		return armIsExtended;
+	}
+	
+	
 	
 	
 	

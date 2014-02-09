@@ -45,6 +45,7 @@ public class BetaRobot extends SimpleRobot {
 		
 	
 	boolean buttonIntakeIsDown = false;
+	boolean buttonIntakeRollerIsDown = false;
 	boolean buttonLaunchIsDown = false;
 	
 	boolean intakeIsRear = true;
@@ -181,14 +182,28 @@ public class BetaRobot extends SimpleRobot {
 			
 			
 			buttonIntakeIsDown = false;
-			m_intakeArm.toggleEnabled();
 			m_intakeArm.toggleExtended();
+			m_intakeArm.setEnabled(m_intakeArm.getExtendedState());
 		}
 		
 				
 		m_intakeArm.updateSolenoids();
 
 		
+		
+		// If the intake button is pressed, get ready for its release
+		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)){
+			buttonIntakeRollerIsDown = true;
+		}
+		
+		// If the intake button is released, toggle the state of the solenoid
+		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER) &&
+				buttonIntakeRollerIsDown == true){
+			
+			
+			buttonIntakeRollerIsDown = false;
+			m_intakeArm.toggleEnabled();
+		}
 		
 		
 		
