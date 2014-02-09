@@ -46,7 +46,7 @@ public class RobotConstants {
         public static int JOYSTICK_BUTTON_LAUNCH = 3;
         
         
-        public static int JOYSTICK_BUTTON_DRIVE_ORIENTATION = 3;
-        public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 4;
+        public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 3;
+        public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 4;
         
 }

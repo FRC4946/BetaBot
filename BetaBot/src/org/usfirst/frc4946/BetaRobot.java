@@ -156,34 +156,15 @@ public class BetaRobot extends SimpleRobot {
      * This function contains code pertaining to the task joystick.
      * It is called once every loop of the operator control cycle.
      */
-	private void operatorTaskSystem() {
-		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-		
+	private void operatorTaskSystem() {		
 		//TODO: Decide on buttons for the pneumatic controls. Current ones are just for debug
 		
-		// If the trigger is down, lift the ball into the rollers		
-		m_loader.setExtended(m_taskJoystick.getTrigger());
 		
 		
 		
+		//********* INTAKE *********\\
 		
-		// If the launch button is pressed, get ready for its release
-		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH)){
-			buttonLaunchIsDown = true;
-		}
-		
-		// If the launch button is released, toggle the state of the solenoid
-		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH) &&
-				buttonLaunchIsDown == true){
-			
-			buttonLaunchIsDown = false;
-			m_launcher.toggleEnabled();
-		}
-		
-		
-		
-		
-		
+
 		// If the intake button is pressed, get ready for its release
 		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE)){
 			buttonIntakeIsDown = true;
@@ -199,8 +180,46 @@ public class BetaRobot extends SimpleRobot {
 			m_intakeArm.toggleExtended();
 		}
 		
-		m_loader.updateSolenoids();
+				
 		m_intakeArm.updateSolenoids();
+
+		
+		
+		
+		
+		
+		
+		//********* LOADER *********\\
+		
+		
+		// If the trigger is down, lift the ball into the rollers		
+		m_loader.setExtended(m_taskJoystick.getTrigger());
+		
+		m_loader.updateSolenoids();
+
+		
+		
+		
+		
+		
+		
+		
+		
+		//********* LAUNCHER *********\\
+		
+		
+		// If the launch button is pressed, get ready for its release
+		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH)){
+			buttonLaunchIsDown = true;
+		}
+		
+		// If the launch button is released, toggle the state of the solenoid
+		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH) &&
+				buttonLaunchIsDown == true){
+			
+			buttonLaunchIsDown = false;
+			m_launcher.toggleEnabled();
+		}
 		
 		
 		// Set the launcher speed to the Z val, and then update the motors
@@ -220,36 +239,11 @@ public class BetaRobot extends SimpleRobot {
      * It is called once every loop of the operator control cycle.
      */
 	private void operatorDriveSystem() {
-		//m_robotDrive.arcadeDrive(m_driveJoystick); 
 		
-		//=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-		//Same as above, but reduce either turning, or maximum speed depending on the trigger.
-		
-		
+		//Drive the robot with either better turning, or maximum speed depending on the trigger.
 		double outputMagnitude = m_driveJoystick.getY();
 		double curve = m_driveJoystick.getX();
-				
-		m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Z is "+m_taskJoystick.getZ()+"                 ");
 		
-		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
-		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");		
-				
-		
-		/*		
-		//Check the joystick's deadzone
-		if(Math.abs(outputMagnitude) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
-			outputMagnitude = 0.0;
-		}
-		if(Math.abs(curve) < RobotConstants.DRIVE_JOYSTICK_DEADZONE){
-			curve = 0.0;
-		}
-		*/
-		 
-		 
-		 
-		
-		
-		//Check the trigger
 		if( m_driveJoystick.getTrigger() ){
 			//allow fast speed, but reduce turning
 			curve *= 0.4;
@@ -261,11 +255,12 @@ public class BetaRobot extends SimpleRobot {
 		}
 		
 		
+		
 		// Set the orientation (which way if front)
-		if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_DRIVE_ORIENTATION)){
+		if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)){
 			intakeIsRear = true;
 		}
-		else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)){
+		else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ORIENTATION)){
 			intakeIsRear = false;
 		}
 		
@@ -276,6 +271,14 @@ public class BetaRobot extends SimpleRobot {
 		else{
 			m_robotDrive.arcadeDrive(outputMagnitude, curve, true);
 		}
+		
+		
+		//********* CONSOLE *********\\
+		
+		m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Z is "+m_taskJoystick.getZ()+"                 ");
+		
+		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
+		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");		
 		
 	}
 }
