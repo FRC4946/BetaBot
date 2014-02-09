@@ -30,7 +30,7 @@ public class Launcher {
 		
 		if(isEnabled){
 			m_launcherTopController.set(speed);
-			m_launcherBottomController.set(speed);
+			m_launcherBottomController.set(speed*-1);
 			}
 		else{
 			m_launcherTopController.set(0.0);

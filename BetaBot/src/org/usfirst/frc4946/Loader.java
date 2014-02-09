@@ -21,12 +21,12 @@ public class Loader {
 		if (isExtended) {
 			m_lowerBallSolenoid.set(false);
 			m_liftBallSolenoid.set(true);
-			m_solenoidCounter = 1000;
+			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
 		} else {
 			m_liftBallSolenoid.set(false);
 			m_lowerBallSolenoid.set(true);
-			m_solenoidCounter = 1000;
+			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 		}
 	}
 	

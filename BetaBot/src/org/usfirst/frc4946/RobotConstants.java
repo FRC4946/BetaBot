@@ -9,7 +9,6 @@ public class RobotConstants {
         final static int PWM_MOTOR_RIGHT_FRONT = 3;
         final static int PWM_MOTOR_RIGHT_REAR = 4;
         
-        
         final static int PWM_MOTOR_LAUNCHER_TOP = 5;
         final static int PWM_MOTOR_LAUNCHER_BOTTOM = 6;
         
@@ -40,13 +39,16 @@ public class RobotConstants {
         
         
         
-        // ** Buttons ** \\
+        //*** Buttons ***\\
         
         public static int JOYSTICK_BUTTON_INTAKE = 2;
         public static int JOYSTICK_BUTTON_LAUNCH = 3;
-        
-        
         public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 3;
-        public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 4;
+        public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 4;        
         
+        
+        
+        //*** Misc ***\\
+        
+        public static int SOLENOID_COOLDOWN_TIME = 1000;
 }

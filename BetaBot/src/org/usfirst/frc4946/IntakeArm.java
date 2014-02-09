@@ -40,12 +40,12 @@ public class IntakeArm {
 		if (isExtended) {
 			m_retractGrabberSolenoid.set(false);
 			m_extendGrabberSolenoid.set(true);
-			m_solenoidCounter = 1000;
+			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
 		} else {
 			m_extendGrabberSolenoid.set(false);
 			m_retractGrabberSolenoid.set(true);
-			m_solenoidCounter = 1000;
+			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 		}
 	}
 	
