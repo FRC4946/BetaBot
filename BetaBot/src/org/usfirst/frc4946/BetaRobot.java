@@ -27,9 +27,9 @@ public class BetaRobot extends SimpleRobot {
 	
 	RobotDrive m_robotDrive = new RobotDrive(RobotConstants.PWM_MOTOR_LEFT_FRONT, RobotConstants.PWM_MOTOR_LEFT_REAR, RobotConstants.PWM_MOTOR_RIGHT_FRONT, RobotConstants.PWM_MOTOR_RIGHT_REAR);
 	
-	IntakeArm m_intakeArm;
-	Launcher m_launcher;
-	Loader m_loader;
+	IntakeArm m_intakeArm = new IntakeArm();
+	Launcher m_launcher = new Launcher();
+	Loader m_loader = new Loader();
 
 	
 	Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
@@ -45,7 +45,9 @@ public class BetaRobot extends SimpleRobot {
 		
 	
 	boolean buttonIntakeIsDown = false;
-	boolean buttonLaunchIsDown = false;	
+	boolean buttonLaunchIsDown = false;
+	
+	boolean intakeIsRear = true;
 	
 	
 	
@@ -56,7 +58,7 @@ public class BetaRobot extends SimpleRobot {
 	public BetaRobot(){
 		
 		// Start the compressor, let it do it's thing. It will turn on and off automatically to regulate pressure.
-		m_primaryCompressor.start();
+		//m_primaryCompressor.start();
 		
 		// Set the speed of the motors on the launcher and intake
 		m_intakeArm.setSpeedOpenLoop(1.0);
@@ -125,7 +127,10 @@ public class BetaRobot extends SimpleRobot {
     public void operatorControl() {
     	
     	m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering operator control");
-    	m_driverStation.updateLCD();
+		m_driverStation.updateLCD();
+
+    	
+    	m_primaryCompressor.start();
     	
     	while (isOperatorControl() && isEnabled()){
     		
@@ -136,11 +141,13 @@ public class BetaRobot extends SimpleRobot {
     		//Call the task oriented code
     		operatorTaskSystem();
     		
+    		m_driverStation.updateLCD();
+    		
     	}
     	
     	m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Stopping operator control");
-    	m_driverStation.updateLCD();
-    	
+		m_driverStation.updateLCD();
+
     }
 
     
@@ -155,7 +162,7 @@ public class BetaRobot extends SimpleRobot {
 		//TODO: Decide on buttons for the pneumatic controls. Current ones are just for debug
 		
 		// If the trigger is down, lift the ball into the rollers		
-		m_loader.setLiftBall(m_taskJoystick.getTrigger());
+		m_loader.setExtended(m_taskJoystick.getTrigger());
 		
 		
 		
@@ -186,10 +193,26 @@ public class BetaRobot extends SimpleRobot {
 		if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE) &&
 				buttonIntakeIsDown == true){
 			
+			
 			buttonIntakeIsDown = false;
 			m_intakeArm.toggleEnabled();
 			m_intakeArm.toggleExtended();
 		}
+		
+		m_loader.updateSolenoids();
+		m_intakeArm.updateSolenoids();
+		
+		
+		// Set the launcher speed to the Z val, and then update the motors
+		
+		double launcherSpeed = (m_taskJoystick.getZ() + 1.0) / 2;
+		
+		m_launcher.setSpeedOpenLoop(launcherSpeed);
+		m_launcher.setEnabled(m_launcher.isEnabled());
+		
+		m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is "+launcherSpeed+"                 ");		
+
+		
 	}
 
     /**
@@ -206,10 +229,11 @@ public class BetaRobot extends SimpleRobot {
 		double outputMagnitude = m_driveJoystick.getY();
 		double curve = m_driveJoystick.getX();
 				
-		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
-		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");
-		m_driverStation.updateLCD();
+		m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Z is "+m_taskJoystick.getZ()+"                 ");
 		
+		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
+		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");		
+				
 		
 		/*		
 		//Check the joystick's deadzone
@@ -237,10 +261,21 @@ public class BetaRobot extends SimpleRobot {
 		}
 		
 		
+		// Set the orientation (which way if front)
+		if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_DRIVE_ORIENTATION)){
+			intakeIsRear = true;
+		}
+		else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)){
+			intakeIsRear = false;
+		}
 		
-		
-		m_robotDrive.arcadeDrive(outputMagnitude, curve * -1, true);
-		
+		// Call arcadeDrive with the updated orientation
+		if(intakeIsRear){
+			m_robotDrive.arcadeDrive(outputMagnitude, curve * -1, true);
+		}
+		else{
+			m_robotDrive.arcadeDrive(outputMagnitude, curve, true);
+		}
 		
 	}
 }

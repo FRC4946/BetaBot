@@ -57,4 +57,9 @@ public class Launcher {
 		
 	}
 	
+	
+	public boolean isEnabled(){
+		return motorsAreEnabled;
+	}
+	
 }
