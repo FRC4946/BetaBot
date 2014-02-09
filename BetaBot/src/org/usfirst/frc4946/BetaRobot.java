@@ -222,6 +222,9 @@ public class BetaRobot extends SimpleRobot {
 		}
 		
 		
+		
+		
+		
 		// Set the launcher speed to the Z val, and then update the motors
 		
 		double launcherSpeed = (m_taskJoystick.getZ() + 1.0) / 2;

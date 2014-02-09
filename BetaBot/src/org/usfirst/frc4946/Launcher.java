@@ -1,20 +1,35 @@
 package org.usfirst.frc4946;
 
+import org.usfirst.frc4946.closedLoop.PIDRateController;
+import org.usfirst.frc4946.closedLoop.RateCounter;
+
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Jaguar;
 
 public class Launcher {
 
-	private SpeedController m_launcherTopController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
+	
 	private SpeedController m_launcherBottomController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
 	
 	private double speed = 0.0;
 	private boolean motorsAreEnabled = false;
 	
+	// Closed loop control test
+	private SpeedController m_launcherTopController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
+	RateCounter m_TopCounter = new RateCounter(2);
+	PIDRateController m_TopPID = new PIDRateController(1,  0,  0.001, m_TopCounter, m_launcherTopController);
+
+	public Launcher(){
+		
+		
+
+	}
+	
 	public void toggleEnabled(){
 		motorsAreEnabled = !motorsAreEnabled;
-		
 		setEnabled(motorsAreEnabled);
+		
 	}
 	
 	
@@ -46,6 +61,9 @@ public class Launcher {
 	 */
 	public void setSpeedOpenLoop(double power){
 		
+		if( m_TopPID.isEnable())
+			m_TopPID.disable();
+		
 		// Make sure that the value is within the valid range of -1 to 1
 		if(power >= -1.0 && power <= 1.0){
 			speed = power;
@@ -54,6 +72,11 @@ public class Launcher {
 	
 	
 	public void setSpeedRPM(double rpm){
+		if( !m_TopPID.isEnable())
+			m_TopPID.enable();
+		
+		
+		m_TopPID.setSetpoint(rpm);
 		
 	}
 	
