@@ -1,6 +1,5 @@
 package org.usfirst.frc4946;
 
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Loader {

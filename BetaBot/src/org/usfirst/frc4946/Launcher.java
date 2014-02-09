@@ -3,7 +3,6 @@ package org.usfirst.frc4946;
 import org.usfirst.frc4946.closedLoop.PIDRateController;
 import org.usfirst.frc4946.closedLoop.RateCounter;
 
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Jaguar;
 
@@ -15,16 +14,19 @@ public class Launcher {
 	private double speed = 0.0;
 	private boolean motorsAreEnabled = false;
 	
+	private boolean isClosedLoopControl = false;
+	
+	//*************************
 	// Closed loop control test
 	private SpeedController m_launcherTopController = new Jaguar(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
-	RateCounter m_TopCounter = new RateCounter(2);
-	PIDRateController m_TopPID = new PIDRateController(1,  0,  0.001, m_TopCounter, m_launcherTopController);
-
-	public Launcher(){
-		
-		
-
-	}
+	RateCounter m_TopCounter = new RateCounter(RobotConstants.PWM_DIO_HALLSENSOR_LAUNCHER_TOP);
+	
+	double m_KP = 1;
+	double m_KD = 0;
+	double m_ClosedLoopTolerance = 10;
+	
+	PIDRateController m_TopPID = new PIDRateController(m_KP,  0,  m_KD, m_TopCounter, m_launcherTopController);
+	//*************************
 	
 	public void toggleEnabled(){
 		motorsAreEnabled = !motorsAreEnabled;
@@ -32,6 +34,24 @@ public class Launcher {
 		
 	}
 	
+	public double getTopRollerRPM(){
+		return m_TopCounter.getRPM();
+		
+	}
+	
+	public void setClosedLoopEnabled(boolean isEnabled){
+		isClosedLoopControl = isEnabled;
+		motorsAreEnabled = isEnabled;
+		
+		if( isEnabled ){
+			m_TopPID.enable();
+			m_TopPID.setTolerance(m_ClosedLoopTolerance);
+			
+		}else{
+			m_TopPID.disable();
+			
+		}		
+	} 
 	
 	/**
 	 * Start or stop the motors.
@@ -40,16 +60,18 @@ public class Launcher {
 	 * @param isEnabled Whether to enable the motors or not.
 	 */
 	public void setEnabled(boolean isEnabled){
+		isClosedLoopControl = false;
 		
 		motorsAreEnabled = isEnabled;
 		
 		if(isEnabled){
 			m_launcherTopController.set(speed);
 			m_launcherBottomController.set(speed*-1);
-			}
-		else{
+		
+		}else{
 			m_launcherTopController.set(0.0);
 			m_launcherBottomController.set(0.0);
+		
 		}
 	}
 
@@ -60,9 +82,7 @@ public class Launcher {
 	 * @param power The speed to set. Should be between -1.0 and 1.0
 	 */
 	public void setSpeedOpenLoop(double power){
-		
-		if( m_TopPID.isEnable())
-			m_TopPID.disable();
+		isClosedLoopControl = false;
 		
 		// Make sure that the value is within the valid range of -1 to 1
 		if(power >= -1.0 && power <= 1.0){
@@ -72,10 +92,6 @@ public class Launcher {
 	
 	
 	public void setSpeedRPM(double rpm){
-		if( !m_TopPID.isEnable())
-			m_TopPID.enable();
-		
-		
 		m_TopPID.setSetpoint(rpm);
 		
 	}
@@ -83,6 +99,11 @@ public class Launcher {
 	
 	public boolean isEnabled(){
 		return motorsAreEnabled;
+
 	}
-	
+
+	public boolean isClosedLoopControl() {
+		return isClosedLoopControl;
+	}
+
 }

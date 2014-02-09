@@ -218,23 +218,40 @@ public class BetaRobot extends SimpleRobot {
 				buttonLaunchIsDown == true){
 			
 			buttonLaunchIsDown = false;
+			m_launcher.setClosedLoopEnabled(false);
 			m_launcher.toggleEnabled();
+			
 		}
 		
 		
+		//--------------------------------------------------------------------------------
+		// If the closed loop enable button is pressed, switch over to closed loop control
+		if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_ENABLE_CLOSEDLOOP_LAUNCHER)){
+			m_launcher.setClosedLoopEnabled(true);
 		
-		
-		
-		// Set the launcher speed to the Z val, and then update the motors
-		
-		double launcherSpeed = (m_taskJoystick.getZ() + 1.0) / 2;
-		
-		m_launcher.setSpeedOpenLoop(launcherSpeed);
-		m_launcher.setEnabled(m_launcher.isEnabled());
-		
-		m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is "+launcherSpeed+"                 ");		
+		}
+				
+				
+		if( m_launcher.isClosedLoopControl()){
+			double launcherSpeed = (m_taskJoystick.getZ() + 1.0) / 2;
+			double maxRPM = 10000; //the maximim RPM we can command
+			launcherSpeed *= maxRPM;
+			
+			m_launcher.setSpeedRPM(launcherSpeed);
+			
+			m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "RPM:"+launcherSpeed +"," + m_launcher.getTopRollerRPM());		
+			
+		}else{
 
+			// Set the launcher speed to the Z val, and then update the motors
+			double launcherSpeed = (m_taskJoystick.getZ() + 1.0) / 2;
+			
+			m_launcher.setSpeedOpenLoop(launcherSpeed);
+			m_launcher.setEnabled(m_launcher.isEnabled());
+			
+			m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is "+launcherSpeed+"                 ");		
 		
+		}		
 	}
 
     /**

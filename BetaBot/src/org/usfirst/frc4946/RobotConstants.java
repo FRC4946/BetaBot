@@ -1,5 +1,7 @@
 package org.usfirst.frc4946;
 
+import edu.wpi.first.wpilibj.DigitalSource;
+
 public class RobotConstants {
 	
 		//*** Motors ***\\
@@ -35,7 +37,11 @@ public class RobotConstants {
         
         public static final int BALL_LIFT_VALVE_RELAY = 3; // The valve to raise the ball lifter. (Purple in the diagram)
         public static final int BALL_LOWER_VALVE_RELAY = 4; // The valve to lower the ball lifter
+		
         
+        //*** DIO ***\\
+        public static final int PWM_DIO_HALLSENSOR_LAUNCHER_TOP = 2;
+		
         
         
         
@@ -46,6 +52,8 @@ public class RobotConstants {
         public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 3;
         public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 4;        
         
+        public static final int JOYSTICK_BUTTON_ENABLE_CLOSEDLOOP_LAUNCHER = 5;
+		       
         
         
         //*** Misc ***\\
