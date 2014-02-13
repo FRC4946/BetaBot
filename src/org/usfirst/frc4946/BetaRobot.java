@@ -242,7 +242,7 @@ public class BetaRobot extends SimpleRobot {
 		}
 		
 		
-		// Set the launcher speed to the val, and then update the motors
+		// Set the launcher speed to the Z val, and then update the motors
 		
 		double launcherSpeed = 0.25;
 		
