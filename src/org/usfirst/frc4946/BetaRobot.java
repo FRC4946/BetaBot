@@ -148,12 +148,14 @@ public class BetaRobot extends SimpleRobot {
         //********* INTAKE *********\\
         // Extend and turn on the intake arm
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
+            
             m_intakeArm.setExtended(true);
             m_intakeArm.setEnabled(true);
         }
 
         // Retract and turn off the intake arm
-        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_IN)) {
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_IN)) {
+            
             m_intakeArm.setExtended(false);
             m_intakeArm.setEnabled(false);
         }
@@ -166,11 +168,13 @@ public class BetaRobot extends SimpleRobot {
         }
 
         // If the intake roller button is released, toggle the state of the solenoid
-        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)
+        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)
                 && buttonIntakeRollerIsDown == true) {
 
             buttonIntakeRollerIsDown = false;
-            m_intakeArm.toggleEnabled();
+            if(m_intakeArm.getExtendedState()){
+                m_intakeArm.toggleEnabled();
+            }
         }
 
         //********* LOADER *********\\
