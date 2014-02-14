@@ -199,18 +199,17 @@ public class BetaRobot extends SimpleRobot {
             m_launcher.toggleEnabled();
 
             if (m_launcher.isEnabled()) {
-                m_intakeArm.setExtended(false);
+                m_intakeArm.setExtended(true);
             }
         }
 
 		// Set the launcher speed to the Z val, and then update the motors
         double launcherSpeed = m_taskJoystick.getZ();
 
-        launcherSpeed *= -1;
-        launcherSpeed = (launcherSpeed + 1) / 2;
-        launcherSpeed *= 7;
+        launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
+        launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
+        launcherSpeed *= 7.0;                       // Scale to 7v
 
-		//double launcherSpeed = 0.25;
         m_launcher.setSpeedOpenLoop(launcherSpeed);
         m_launcher.setEnabled(m_launcher.isEnabled());
 
