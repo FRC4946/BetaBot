@@ -6,21 +6,26 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Launcher {
 
-    private Talon m_launcherTopController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
-    private Talon m_launcherBottomController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
-    private DriverStation m_driverStation;
+    private final Talon m_launcherTopController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
+    private final Talon m_launcherBottomController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
+    private final DriverStation m_driverStation;
 
     private double speed = 0.0;
     private boolean motorsAreEnabled = false;
 
+    
+    
+    
     Launcher() {
         LiveWindow.addActuator("Shooter", "Top motor", m_launcherTopController);
         LiveWindow.addActuator("Shooter", "Bottom motor", m_launcherBottomController);
-        
+
         m_driverStation = DriverStation.getInstance();
 
     }
 
+    
+    
     public void toggleEnabled() {
         motorsAreEnabled = !motorsAreEnabled;
 
@@ -46,6 +51,13 @@ public class Launcher {
         }
     }
 
+    public boolean isEnabled() {
+        return motorsAreEnabled;
+    }
+
+    
+    
+    
     /**
      * Set the speed of the motors without checking the result. After calling
      * this, call setEnabled(true) to update the motors.
@@ -53,11 +65,9 @@ public class Launcher {
      * @param power The speed to set. Should be between -12 and 12 ish
      */
     public void setSpeedOpenLoop(double power) {
-        
+
         speed = power / m_driverStation.getBatteryVoltage();
 
-        
-        
         // Old method, using just a percentage
         //if(power >= -1.0 && power <= 1.0){
         //  speed = power;
@@ -66,10 +76,6 @@ public class Launcher {
 
     public void setSpeedRPM(double rpm) {
 
-    }
-
-    public boolean isEnabled() {
-        return motorsAreEnabled;
     }
 
 }

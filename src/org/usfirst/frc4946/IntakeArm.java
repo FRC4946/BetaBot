@@ -2,16 +2,15 @@ package org.usfirst.frc4946;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class IntakeArm {
 
-    private Talon m_intakeController = new Talon(RobotConstants.PWM_MOTOR_INTAKE);
+    private final Talon m_intakeController = new Talon(RobotConstants.PWM_MOTOR_INTAKE);
 
-    private Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
-    private Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
+    private final Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
+    private final Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 
     private double speed = 0.0;
     private boolean motorsAreEnabled = false;
@@ -19,8 +18,11 @@ public class IntakeArm {
 
     private int m_solenoidCounter = 0;
 
-    private DriverStation m_driverStation;
+    private final DriverStation m_driverStation;
 
+    
+    
+    
     IntakeArm() {
         LiveWindow.addActuator("Intake Arm", "Roller", m_intakeController);
         LiveWindow.addActuator("Intake Arm", "Extend solenoid", m_extendGrabberSolenoid);
@@ -29,6 +31,8 @@ public class IntakeArm {
         m_driverStation = DriverStation.getInstance();
     }
 
+    
+    
     public void toggleExtended() {
         armIsExtended = !armIsExtended;
 
@@ -50,10 +54,10 @@ public class IntakeArm {
             m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
         } else {
-        	//Retracting, so stop the motor for safety
-        	setEnabled(false);
-        	
-        	//And retract the arm
+            //Retracting, so stop the motor for safety
+            setEnabled(false);
+
+            //And retract the arm
             m_extendGrabberSolenoid.set(false);
             m_retractGrabberSolenoid.set(true);
             m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
@@ -76,6 +80,8 @@ public class IntakeArm {
         return armIsExtended;
     }
 
+    
+    
     public void toggleEnabled() {
         motorsAreEnabled = !motorsAreEnabled;
 
@@ -100,6 +106,8 @@ public class IntakeArm {
 
     }
 
+    
+    
     /**
      * Set the speed of the motors without checking the result. After calling
      * this, call setEnabled(true) to update the motors.

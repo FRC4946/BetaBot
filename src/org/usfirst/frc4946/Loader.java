@@ -1,26 +1,29 @@
 package org.usfirst.frc4946;
 
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Loader {
 
-    private Solenoid m_liftBallSolenoid = new Solenoid(RobotConstants.BALL_LIFT_VALVE_RELAY);
-    private Solenoid m_lowerBallSolenoid = new Solenoid(RobotConstants.BALL_LOWER_VALVE_RELAY);
+    private final Solenoid m_liftBallSolenoid = new Solenoid(RobotConstants.BALL_LIFT_VALVE_RELAY);
+    private final Solenoid m_lowerBallSolenoid = new Solenoid(RobotConstants.BALL_LOWER_VALVE_RELAY);
 
     private int m_solenoidCounter = 0;
 
+    
+    
     Loader() {
         LiveWindow.addActuator("Loader", "Lift solenoid", m_liftBallSolenoid);
         LiveWindow.addActuator("Loader", "Lower solenoid", m_lowerBallSolenoid);
 
     }
 
+    
+    
     /**
      * Raise or lower the loader mechanism.
      *
-     * @param lift Whether to raise the mechanism or not
+     * @param isExtended Whether to raise the mechanism or not
      */
     public void setExtended(boolean isExtended) {
 

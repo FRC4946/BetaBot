@@ -37,13 +37,9 @@ public class BetaRobot extends SimpleRobot {
     // The second is the compressor's relay (The Spike module). It is what turns on and off the compressor.
     Compressor m_primaryCompressor = new Compressor(RobotConstants.COMPRESSOR_PRESSURE_SWITCH, RobotConstants.COMPRESSOR_RELAY);
 
-    boolean buttonIntakeIsDown = false;
     boolean buttonIntakeRollerIsDown = false;
-    boolean buttonLaunchIsDown = false;
-
     boolean intakeIsRear = true;
 
-    
     //This function called once at system start.
     protected void robotInit() {
         // Start the compressor, let it do it's thing. It will turn on and off automatically to regulate pressure.
@@ -69,7 +65,7 @@ public class BetaRobot extends SimpleRobot {
         m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering autonomous");
         m_driverStation.updateLCD();
 
-    	//TODO: The autonomous stuff
+        //TODO: The autonomous stuff
         // Check for hotzone?
         // Aim towards hotzone?
         // Shoot the ball
@@ -149,61 +145,53 @@ public class BetaRobot extends SimpleRobot {
     private void operatorTaskSystem() {
 		//TODO: Decide on buttons for the pneumatic controls. Current ones are just for debug
 
-		//********* INTAKE *********\\
-        // If the intake button is pressed, get ready for its release
-        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE)) {
-            buttonIntakeIsDown = true;
+        //********* INTAKE *********\\
+        // Extend and turn on the intake arm
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
+            m_intakeArm.setExtended(true);
+            m_intakeArm.setEnabled(true);
         }
 
-        // If the intake button is released, toggle the state of the solenoid
-        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE)
-                && buttonIntakeIsDown == true) {
-
-            buttonIntakeIsDown = false;
-            m_intakeArm.toggleExtended();
-            m_intakeArm.setEnabled(!m_intakeArm.getExtendedState());
+        // Retract and turn off the intake arm
+        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_IN)) {
+            m_intakeArm.setExtended(false);
+            m_intakeArm.setEnabled(false);
         }
 
         m_intakeArm.updateSolenoids();
 
-        // If the intake button is pressed, get ready for its release
+        // If the intake roller button is pressed, get ready for its release
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)) {
             buttonIntakeRollerIsDown = true;
         }
 
-        // If the intake button is released, toggle the state of the solenoid
-        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)
+        // If the intake roller button is released, toggle the state of the solenoid
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ROLLER)
                 && buttonIntakeRollerIsDown == true) {
 
             buttonIntakeRollerIsDown = false;
             m_intakeArm.toggleEnabled();
         }
 
-		//********* LOADER *********\\
+        //********* LOADER *********\\
         // If the trigger is down, lift the ball into the rollers		
         m_loader.setExtended(m_taskJoystick.getTrigger());
 
         m_loader.updateSolenoids();
 
-		//********* LAUNCHER *********\\
+        //********* LAUNCHER *********\\
         // If the launch button is pressed, get ready for its release
-        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH)) {
-            buttonLaunchIsDown = true;
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_ON)) {
+            m_launcher.setEnabled(true);
+            m_intakeArm.setExtended(true); // Extend the intake arm, just in case
         }
 
         // If the launch button is released, toggle the state of the solenoid
-        if (!m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCH)
-                && buttonLaunchIsDown == true) {
-
-            buttonLaunchIsDown = false;
-            m_launcher.toggleEnabled();
-
-            if (m_launcher.isEnabled()) {
-                m_intakeArm.setExtended(true);
-            }
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
+            m_launcher.setEnabled(false);
         }
 
-		// Set the launcher speed to the Z val, and then update the motors
+        // Set the launcher speed to the Z val, and then update the motors
         double launcherSpeed = m_taskJoystick.getZ();
 
         launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
@@ -253,7 +241,7 @@ public class BetaRobot extends SimpleRobot {
             m_robotDrive.arcadeDrive(outputMagnitude * -1, curve * -1, true);
         }
 
-		//********* CONSOLE *********\\
+        //********* CONSOLE *********\\
         m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is " + outputMagnitude + "                 ");
         m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is " + curve + "                 ");
 
