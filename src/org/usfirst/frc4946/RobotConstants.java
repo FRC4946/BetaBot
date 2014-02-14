@@ -43,4 +43,5 @@ public class RobotConstants {
         //*** Misc ***\\
     public static int SOLENOID_COOLDOWN_TIME = 1000;
     public static int CONSOLE_UPDATE_TIME = 10;
+    public static int DISTANCE_SENSOR = 1;
 }
