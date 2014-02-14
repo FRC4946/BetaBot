@@ -1,113 +1,115 @@
 package org.usfirst.frc4946;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class IntakeArm {
 
-	private SpeedController m_intakeController = new Jaguar(RobotConstants.PWM_MOTOR_INTAKE);
+    private Talon m_intakeController = new Talon(RobotConstants.PWM_MOTOR_INTAKE);
 
-	private Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
-	private Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
+    private Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
+    private Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 
-	private double speed = 0.0;
-	private boolean motorsAreEnabled = false;
-	private boolean armIsExtended = false;
+    private double speed = 0.0;
+    private boolean motorsAreEnabled = false;
+    private boolean armIsExtended = false;
 
-	private int m_solenoidCounter = 0;
+    private int m_solenoidCounter = 0;
 
-	
-	
-	
-	public void toggleExtended() {
-		armIsExtended = !armIsExtended;
+    private DriverStation m_driverStation;
 
-		setExtended(armIsExtended);
-	}
+    IntakeArm() {
+        LiveWindow.addActuator("Intake Arm", "Roller", m_intakeController);
+        LiveWindow.addActuator("Intake Arm", "Extend solenoid", m_extendGrabberSolenoid);
+        LiveWindow.addActuator("Intake Arm", "Retract solenoid", m_retractGrabberSolenoid);
 
-	/**
-	 * Extend or retract the arm.
-	 * 
-	 * @param isExtended
-	 *            Whether to extend or retract the arm.
-	 */
-	public void setExtended(boolean isExtended) {
+        m_driverStation = DriverStation.getInstance();
+    }
 
-		armIsExtended = isExtended;
+    public void toggleExtended() {
+        armIsExtended = !armIsExtended;
 
-		if (isExtended) {
-			m_retractGrabberSolenoid.set(false);
-			m_extendGrabberSolenoid.set(true);
-			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
+        setExtended(armIsExtended);
+    }
 
-		} else {
-			m_extendGrabberSolenoid.set(false);
-			m_retractGrabberSolenoid.set(true);
-			m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
-		}
-	}
-	
-	public void updateSolenoids(){
-		// Turn off the solenoid after 100 cycles.
-		if (m_solenoidCounter == 0) {
-			m_extendGrabberSolenoid.set(false);
-			m_retractGrabberSolenoid.set(false);
+    /**
+     * Extend or retract the arm.
+     *
+     * @param isExtended Whether to extend or retract the arm.
+     */
+    public void setExtended(boolean isExtended) {
 
-		} else {
-			m_solenoidCounter--;
+        armIsExtended = isExtended;
 
-		}
-	}
-	
-	public boolean getExtendedState(){
-		return armIsExtended;
-	}
-	
-	
-	
-	
-	
+        if (isExtended) {
+            m_retractGrabberSolenoid.set(false);
+            m_extendGrabberSolenoid.set(true);
+            m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
-	public void toggleEnabled() {
-		motorsAreEnabled = !motorsAreEnabled;
+        } else {
+            m_extendGrabberSolenoid.set(false);
+            m_retractGrabberSolenoid.set(true);
+            m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
+        }
+    }
 
-		setEnabled(motorsAreEnabled);
-	}
+    public void updateSolenoids() {
+        // Turn off the solenoid after 100 cycles.
+        if (m_solenoidCounter == 0) {
+            m_extendGrabberSolenoid.set(false);
+            m_retractGrabberSolenoid.set(false);
 
-	/**
-	 * Start or stop the motors. If the speed has been changed, call
-	 * setEnabled(true) to update the motors.
-	 * 
-	 * @param isEnabled
-	 *            Whether to enable the motors or not.
-	 */
-	public void setEnabled(boolean isEnabled) {
+        } else {
+            m_solenoidCounter--;
 
-		motorsAreEnabled = isEnabled;
+        }
+    }
 
-		if (isEnabled) {
-			m_intakeController.set(1.0);
-		} else {
-			m_intakeController.set(0.0);
-		}
+    public boolean getExtendedState() {
+        return armIsExtended;
+    }
 
-	}
+    public void toggleEnabled() {
+        motorsAreEnabled = !motorsAreEnabled;
 
-	/**
-	 * Set the speed of the motors without checking the result. After calling
-	 * this, call setEnabled(true) to update the motors.
-	 * 
-	 * @param power
-	 *            The speed to set. Should be between -1.0 and 1.0
-	 */
-	public void setSpeedOpenLoop(double power) {
+        setEnabled(motorsAreEnabled);
+    }
 
-		// Make sure that the value is within the valid range of -1 to 1
-		if (power >= -1.0 && power <= 1.0) {
-			speed = power;
-		}
-	}
+    /**
+     * Start or stop the motors. If the speed has been changed, call
+     * setEnabled(true) to update the motors.
+     *
+     * @param isEnabled Whether to enable the motors or not.
+     */
+    public void setEnabled(boolean isEnabled) {
+
+        motorsAreEnabled = isEnabled;
+
+        if (isEnabled) {
+            m_intakeController.set(1.0);
+        } else {
+            m_intakeController.set(0.0);
+        }
+
+    }
+
+    /**
+     * Set the speed of the motors without checking the result. After calling
+     * this, call setEnabled(true) to update the motors.
+     *
+     * @param power The speed to set. Should be between -12 and 12 ish
+     */
+    public void setSpeedOpenLoop(double power) {
+
+        speed = power / m_driverStation.getBatteryVoltage();
+
+        // Old method, using just a percentage
+        //if(power >= -1.0 && power <= 1.0){
+        //  speed = power;
+        //}
+    }
 
 }

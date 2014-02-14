@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -62,8 +61,8 @@ public class BetaRobot extends SimpleRobot {
 		//m_primaryCompressor.start();
 		
 		// Set the speed of the motors on the launcher and intake
-		m_intakeArm.setSpeedOpenLoop(1.0);
-		m_launcher.setSpeedOpenLoop(1.0);
+		m_intakeArm.setSpeedOpenLoop(12);
+		m_launcher.setSpeedOpenLoop(3);
 	}
 	
     /**
@@ -183,7 +182,7 @@ public class BetaRobot extends SimpleRobot {
 			
 			buttonIntakeIsDown = false;
 			m_intakeArm.toggleExtended();
-			m_intakeArm.setEnabled(m_intakeArm.getExtendedState());
+			m_intakeArm.setEnabled(!m_intakeArm.getExtendedState());
 		}
 		
 				
@@ -239,12 +238,22 @@ public class BetaRobot extends SimpleRobot {
 			
 			buttonLaunchIsDown = false;
 			m_launcher.toggleEnabled();
+                        
+                        if(m_launcher.isEnabled()){
+                            m_intakeArm.setExtended(false);
+                        }
 		}
 		
 		
 		// Set the launcher speed to the Z val, and then update the motors
 		
-		double launcherSpeed = 0.25;
+                double launcherSpeed = m_taskJoystick.getZ();
+                
+                launcherSpeed *= -1;
+                launcherSpeed = (launcherSpeed + 1) / 2;
+                launcherSpeed *= 7;
+                
+		//double launcherSpeed = 0.25;
 		
 		m_launcher.setSpeedOpenLoop(launcherSpeed);
 		m_launcher.setEnabled(m_launcher.isEnabled());
@@ -266,11 +275,13 @@ public class BetaRobot extends SimpleRobot {
 		
 		if( m_driveJoystick.getTrigger() ){
 			//allow fast speed, but reduce turning
-			curve *= 0.4;
+			outputMagnitude *= 1.0;
+                        curve *= 0.8;
 			
 		}else{
 			//Drive slow if the trigger is not down
-			outputMagnitude *= 0.4;
+			outputMagnitude *= 0.6;
+                        curve *= 0.7;
 			
 		}
 		
@@ -295,7 +306,6 @@ public class BetaRobot extends SimpleRobot {
 		
 		//********* CONSOLE *********\\
 		
-		m_driverStation.println(DriverStationLCD.Line.kUser2, 1, "Z is "+m_taskJoystick.getZ()+"                 ");
 		
 		m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is "+outputMagnitude+"                 ");
 		m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is "+curve+"                 ");		
