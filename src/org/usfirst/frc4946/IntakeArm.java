@@ -38,18 +38,22 @@ public class IntakeArm {
     /**
      * Extend or retract the arm.
      *
-     * @param isExtended Whether to extend or retract the arm.
+     * @param extend Whether to extend or retract the arm.
      */
-    public void setExtended(boolean isExtended) {
+    public void setExtended(boolean extend) {
 
-        armIsExtended = isExtended;
+        armIsExtended = extend;
 
-        if (isExtended) {
+        if (extend) {
             m_retractGrabberSolenoid.set(false);
             m_extendGrabberSolenoid.set(true);
             m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
         } else {
+        	//Retracting, so stop the motor for safety
+        	setEnabled(false);
+        	
+        	//And retract the arm
             m_extendGrabberSolenoid.set(false);
             m_retractGrabberSolenoid.set(true);
             m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
