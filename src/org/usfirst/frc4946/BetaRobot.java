@@ -27,6 +27,7 @@ public class BetaRobot extends SimpleRobot {
     IntakeArm m_intakeArm = new IntakeArm();
     Launcher m_launcher = new Launcher();
     Loader m_loader = new Loader();
+    DistanceSensor m_distanceSensor = new DistanceSensor();
 
     Joystick m_driveJoystick = new Joystick(RobotConstants.JOYSTICK_LEFT);
     Joystick m_taskJoystick = new Joystick(RobotConstants.JOYSTICK_RIGHT);
@@ -231,7 +232,7 @@ public class BetaRobot extends SimpleRobot {
 
         }
 
-        // Set the orientation (which way if front)
+        // Set the orientation (which way is front)
         if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)) {
             intakeIsRear = true;
         } else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_ORIENTATION)) {
@@ -248,6 +249,7 @@ public class BetaRobot extends SimpleRobot {
         //********* CONSOLE *********\\
         m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is " + outputMagnitude + "                 ");
         m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is " + curve + "                 ");
+        m_driverStation.println(DriverStationLCD.Line.kUser6, 1, "Dist(inch)  is " + m_distanceSensor.getRangeInchs() + "                 ");
 
     }
 }
