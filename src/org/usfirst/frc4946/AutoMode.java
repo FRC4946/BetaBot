@@ -52,7 +52,7 @@ public class AutoMode {
     }
 
     public void startShooter() {
-        m_launcher.setEnabled(true);
+        m_launcher.setOpenLoopEnabled(true);
     }
 
     public void setShooterSpeed(double speed, boolean mode) {
@@ -64,7 +64,7 @@ public class AutoMode {
         }
     }
     public void stopShooter() {
-        m_launcher.setEnabled(false);
+        m_launcher.setOpenLoopEnabled(false);
     }
     public void extendArm() {
         m_intakeArm.setExtended(true);

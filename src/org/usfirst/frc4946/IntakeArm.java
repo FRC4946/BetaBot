@@ -1,6 +1,7 @@
 package org.usfirst.frc4946;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -12,7 +13,9 @@ public class IntakeArm {
     private final Solenoid m_extendGrabberSolenoid = new Solenoid(RobotConstants.EXTEND_ARM_VALVE_RELAY);
     private final Solenoid m_retractGrabberSolenoid = new Solenoid(RobotConstants.RETRACT_ARM_VALVE_RELAY);
 
-    private double speed = 0.0;
+    DriverStationLCD m_driverStationLCD = DriverStationLCD.getInstance();
+    
+    //private double speed = 0.0;
     private boolean motorsAreEnabled = false;
     private boolean armIsExtended = false;
 
@@ -108,20 +111,20 @@ public class IntakeArm {
 
     
     
-    /**
-     * Set the speed of the motors without checking the result. After calling
-     * this, call setEnabled(true) to update the motors.
-     *
-     * @param power The speed to set. Should be between -12 and 12 ish
-     */
-    public void setSpeedOpenLoop(double power) {
-
-        speed = power / m_driverStation.getBatteryVoltage();
-
-        // Old method, using just a percentage
-        //if(power >= -1.0 && power <= 1.0){
-        //  speed = power;
-        //}
-    }
+//    /**
+//     * Set the speed of the motors without checking the result. After calling
+//     * this, call setEnabled(true) to update the motors.
+//     *
+//     * @param power The speed to set. Should be between -12 and 12 ish
+//     */
+//    public void setSpeedOpenLoop(double power) {
+//
+//        speed = power / m_driverStation.getBatteryVoltage();
+//        
+//        // Old method, using just a percentage
+//        //if(power >= -1.0 && power <= 1.0){
+//        //  speed = power;
+//        //}
+//    }
 
 }
