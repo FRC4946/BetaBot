@@ -2,7 +2,7 @@ package org.usfirst.frc4946;
 
 public class RobotConstants {
 
-		//*** Motors ***\\
+    //*** Motors ***\\
     final static int PWM_MOTOR_LEFT_FRONT = 1;
     final static int PWM_MOTOR_LEFT_REAR = 2;
     final static int PWM_MOTOR_RIGHT_FRONT = 3;
@@ -13,13 +13,11 @@ public class RobotConstants {
 
     final static int PWM_MOTOR_INTAKE = 5;
 
-    
-        //*** Joysticks ***\\
+    //*** Joysticks ***\\
     public static final int JOYSTICK_LEFT = 1;
     public static final int JOYSTICK_RIGHT = 2;
 
-    
-        //*** Pneumatics ***\\
+    //*** Pneumatics ***\\
     public static final int COMPRESSOR_PRESSURE_SWITCH = 1; // On the GPIO header of the digital sidecar
     public static final int COMPRESSOR_RELAY = 1;			// On the relay header of the digital sidecar
 
@@ -29,8 +27,7 @@ public class RobotConstants {
     public static final int BALL_LIFT_VALVE_RELAY = 3; // The valve to raise the ball lifter. (Purple in the diagram)
     public static final int BALL_LOWER_VALVE_RELAY = 4; // The valve to lower the ball lifter
 
-    
-        //*** Buttons ***\\
+    //*** Buttons ***\\
     public static int JOYSTICK_BUTTON_INTAKE_OUT = 6;
     public static int JOYSTICK_BUTTON_INTAKE_IN = 7;
     public static int JOYSTICK_BUTTON_LAUNCHER_ON = 11;
@@ -38,10 +35,13 @@ public class RobotConstants {
     public static int JOYSTICK_BUTTON_INTAKE_ROLLER = 2;
     public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 5;
     public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 6;
+    public static int JOYSTICK_BUTTON_RPM_MODE = 8;
+    public static int JOYSTICK_BUTTON_VOLTAGE_MODE = 9;
 
-    
-        //*** Misc ***\\
+    //*** Misc ***\\
     public static int SOLENOID_COOLDOWN_TIME = 1000;
     public static int CONSOLE_UPDATE_TIME = 10;
-    public static int DISTANCE_SENSOR = 1;
+    public static int DISTANCE_SENSOR = 2;
+    public static int SHOOTER_MAX_VOLTAGE=7;
+    public static int SHOOTER_MAX_RPM=5000;
 }

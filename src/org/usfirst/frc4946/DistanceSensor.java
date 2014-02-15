@@ -30,7 +30,7 @@ public class DistanceSensor {
     // we want inches cause we know field size in inches (1 inch = 2.54 cm
     // 2.54*0.00245=0.006223
     // 0.009766 a value I found on chief delphi, sensor might not return 0 volt so we might need to add a value to the calculated one above
-    range = voltage/0.006223;
+    range = voltage/0.0062;
     return range;
     
     }

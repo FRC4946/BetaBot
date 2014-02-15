@@ -40,6 +40,7 @@ public class BetaRobot extends SimpleRobot {
 
     boolean buttonIntakeRollerIsDown = false;
     boolean intakeIsRear = true;
+    public boolean modeRPM = false;
 
     //This function called once at system start.
     protected void robotInit() {
@@ -65,46 +66,46 @@ public class BetaRobot extends SimpleRobot {
 
         m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering autonomous");
         m_driverStation.updateLCD();
-        
+
         while (isAutonomous() && isEnabled()) {
-            AutoMode autoRoutine = new AutoMode(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
-            autoRoutine.driveToDistance(5*12, 0.4);
+            AutoMode autoRoutine = new AutoMode(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
+            autoRoutine.driveToDistance(5 * 12, 0.4);
         //TODO: The autonomous stuff
-        // Check for hotzone?
-        // Aim towards hotzone?
-        // Shoot the ball
-        // Move forwards
+            // Check for hotzone?
+            // Aim towards hotzone?
+            // Shoot the ball
+            // Move forwards
         /* 
     	
-         //TODO: Hotzone stuff?
+             //TODO: Hotzone stuff?
     	
     	
-         // Shoot the ball
+             // Shoot the ball
     	
-         m_launcher.setEnabled(true);
+             m_launcher.setEnabled(true);
     	
-         Timer.delay(0.1);
+             Timer.delay(0.1);
     	
-         m_loader.setLiftBall(true);
+             m_loader.setLiftBall(true);
     	
-         Timer.delay(0.8);
+             Timer.delay(0.8);
     	
-         m_launcher.setEnabled(false);
-         m_loader.setLiftBall(false);
+             m_launcher.setEnabled(false);
+             m_loader.setLiftBall(false);
     	
     	
     	
-         // Move forwards
+             // Move forwards
     	
-         m_robotDrive.drive(0.5, 0);
+             m_robotDrive.drive(0.5, 0);
     	
-         Timer.delay(3);
+             Timer.delay(3);
     	
-         m_robotDrive.drive(0,0);
+             m_robotDrive.drive(0,0);
     	
 
     	
-         */
+             */
         }
         m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Finished auto, waiting");
         m_driverStation.updateLCD();
@@ -153,16 +154,16 @@ public class BetaRobot extends SimpleRobot {
         //********* INTAKE *********\\
         // Extend and turn on the intake arm
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
-            
+
             m_intakeArm.setExtended(true);
-            m_intakeArm.setEnabled(true);
+            m_intakeArm.setEnabledRollers(true);
         }
 
         // Retract and turn off the intake arm
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_IN)) {
-            
+
             m_intakeArm.setExtended(false);
-            m_intakeArm.setEnabled(false);
+            m_intakeArm.setEnabledRollers(false);
         }
 
         m_intakeArm.updateSolenoids();
@@ -177,7 +178,7 @@ public class BetaRobot extends SimpleRobot {
                 && buttonIntakeRollerIsDown == true) {
 
             buttonIntakeRollerIsDown = false;
-            if(m_intakeArm.getExtendedState()){
+            if (m_intakeArm.getExtendedState()) {
                 m_intakeArm.toggleEnabled();
             }
         }
@@ -200,15 +201,28 @@ public class BetaRobot extends SimpleRobot {
             m_launcher.setEnabled(false);
         }
 
+        if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
+            modeRPM = true;
+        } else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
+            modeRPM = false;
+        }
         // Set the launcher speed to the Z val, and then update the motors
         double launcherSpeed = m_taskJoystick.getZ();
 
         launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
         launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
-        launcherSpeed *= 7.0;                       // Scale to 7v
+        //launcherSpeed *= 7.0;                       // Scale to 7v
 
-        m_launcher.setSpeedOpenLoop(launcherSpeed);
-        m_launcher.setEnabled(m_launcher.isEnabled());
+        if (modeRPM = false) {
+            launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
+            m_launcher.setSpeedOpenLoop(launcherSpeed);
+            m_launcher.setEnabled(m_launcher.isEnabled());
+        }
+        if (modeRPM = true) {
+            launcherSpeed *= RobotConstants.SHOOTER_MAX_RPM;  // Scale to max RPM set in constants
+            m_launcher.setSpeedRPM(launcherSpeed);
+            m_launcher.setEnabled(m_launcher.isEnabled());
+        }
 
         m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is " + launcherSpeed + "                 ");
 

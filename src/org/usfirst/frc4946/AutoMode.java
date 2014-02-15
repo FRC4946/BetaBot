@@ -46,7 +46,42 @@ public class AutoMode {
         driveToDistance(currentDistance - distance, speed);
 
     }
-    public void turnToAngle(){
+
+    public void turnToAngle() {
         //needs work, potentially use the gyro,compass, combo part we have?
+    }
+
+    public void startShooter() {
+        m_launcher.setEnabled(true);
+    }
+
+    public void setShooterSpeed(double speed, boolean mode) {
+        if (mode = true) {
+            m_launcher.setSpeedRPM(speed);
+        }
+        if (mode = false) {
+            m_launcher.setSpeedOpenLoop(speed);
+        }
+    }
+    public void stopShooter() {
+        m_launcher.setEnabled(false);
+    }
+    public void extendArm() {
+        m_intakeArm.setExtended(true);
+    }
+    public void enableRollers() {
+        m_intakeArm.setEnabledRollers(true);
+    }
+    public void disableRollers() {
+        m_intakeArm.setEnabledRollers(false);
+    }
+    public void extendLoader() {
+        m_loader.setExtended(true);
+    }
+    public void retractLoader() {
+        m_loader.setExtended(false);
+    }
+    public void getCurrentShooterSpeed() {
+        //return the speed
     }
 }

@@ -55,7 +55,7 @@ public class IntakeArm {
 
         } else {
             //Retracting, so stop the motor for safety
-            setEnabled(false);
+            setEnabledRollers(false);
 
             //And retract the arm
             m_extendGrabberSolenoid.set(false);
@@ -85,7 +85,7 @@ public class IntakeArm {
     public void toggleEnabled() {
         motorsAreEnabled = !motorsAreEnabled;
 
-        setEnabled(motorsAreEnabled);
+        setEnabledRollers(motorsAreEnabled);
     }
 
     /**
@@ -94,7 +94,7 @@ public class IntakeArm {
      *
      * @param isEnabled Whether to enable the motors or not.
      */
-    public void setEnabled(boolean isEnabled) {
+    public void setEnabledRollers(boolean isEnabled) {
 
         motorsAreEnabled = isEnabled;
 
