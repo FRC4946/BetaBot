@@ -65,7 +65,10 @@ public class BetaRobot extends SimpleRobot {
 
         m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering autonomous");
         m_driverStation.updateLCD();
-
+        
+        while (isAutonomous() && isEnabled()) {
+            AutoMode autoRoutine = new AutoMode(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+            autoRoutine.driveToDistance(5*12, 0.4);
         //TODO: The autonomous stuff
         // Check for hotzone?
         // Aim towards hotzone?
@@ -102,6 +105,7 @@ public class BetaRobot extends SimpleRobot {
 
     	
          */
+        }
         m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Finished auto, waiting");
         m_driverStation.updateLCD();
 

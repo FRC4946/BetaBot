@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.usfirst.frc4946;
+
+import edu.wpi.first.wpilibj.RobotDrive;
+
+/**
+ *
+ * @author Stefan
+ */
+public class AutoMode {
+
+    RobotDrive m_robotDrive;
+    Launcher m_launcher;
+    Loader m_loader;
+    IntakeArm m_intakeArm;
+    DistanceSensor m_distanceSensor;
+
+    AutoMode(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
+        m_robotDrive = drive;
+        m_launcher = launcher;
+        m_loader = loader;
+        m_intakeArm = intakeArm;
+        m_distanceSensor = distanceSensor;
+    }
+
+    public void driveToDistance(double distance, double speed) {
+        double currentDistance = m_distanceSensor.getRangeInchs();
+
+        if (distance > currentDistance) {
+            m_robotDrive.drive(speed, 0);
+        }
+        if (distance > currentDistance) {
+            m_robotDrive.drive(speed, 0);
+        }
+
+    }
+
+    public void driveDistance(double distance, double speed) {
+        //get current distance
+        //subtract input distance from current distance and drive to that distance
+        double currentDistance = m_distanceSensor.getRangeInchs();
+        driveToDistance(currentDistance - distance, speed);
+
+    }
+    public void turnToAngle(){
+        //needs work, potentially use the gyro,compass, combo part we have?
+    }
+}
