@@ -229,7 +229,7 @@ public class BetaRobot extends SimpleRobot {
         }
         m_launcher.update();
         
-        m_driverStation.println(RobotConstants.LCD_LAUNCHER, 1, "Speed is " + launcherSpeed + "                 ");
+        m_driverStation.println(RobotConstants.LCD_STATUS, 1, "Speed is " + launcherSpeed + "                 ");
 
     }
 
