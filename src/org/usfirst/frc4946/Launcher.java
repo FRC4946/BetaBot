@@ -38,9 +38,10 @@ public class Launcher {
     public void update(){
        
        if( isClosedLoopControl && motorsAreEnabled){
+          
            double bottomSpeed = m_launcherBottomCounter.getRPM();
            if( bottomSpeed < speedClosedLoop )
-               m_launcherBottomController.set(1);
+               m_launcherBottomController.set(-1);
            else
                m_launcherBottomController.set(0);
            
@@ -50,13 +51,19 @@ public class Launcher {
            else
                m_launcherTopController.set(0);
            
-       }
-        
-       m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-               (int) speedClosedLoop + 
-               "| T:" + (int) m_launcherTopCounter.getRPM()
-               + " |B:" + (int) m_launcherBottomCounter.getRPM());
+           String top = topSpeed < speedClosedLoop ? "|T:": "|t:" ;
+           String bottom = bottomSpeed < speedClosedLoop ? "|B:": "|b:" ;
+           
+           m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
+            (int) speedClosedLoop 
+            + top + (int) m_launcherTopCounter.getRPM()
+            + bottom + (int) m_launcherBottomCounter.getRPM());
        
+       }else{ 
+            m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
+               "|T:" + (int) m_launcherTopCounter.getRPM()
+               + "|B:" + (int) m_launcherBottomCounter.getRPM());
+       }
     }
     
     public void toggleEnabled() {

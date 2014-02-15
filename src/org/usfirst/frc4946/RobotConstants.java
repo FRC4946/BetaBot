@@ -58,8 +58,5 @@ public class RobotConstants {
 
     public static Line LCD_STATUS = DriverStationLCD.Line.kUser5;
     public static Line LCD_MODE_MISC = DriverStationLCD.Line.kUser6;
-    //public static int LCD_SHOOTERLINE = DriverStationLCD.Line.kUser1;
-    //public static int LCD_SHOOTERLINE = DriverStationLCD.Line.kUser1;
-
         
 }

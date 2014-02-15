@@ -185,13 +185,13 @@ public class BetaRobot extends SimpleRobot {
                 m_intakeArm.toggleEnabled();
             }
         }
-
+        
         //********* LOADER *********\\
         // If the trigger is down, lift the ball into the rollers		
-        m_loader.setExtended(m_taskJoystick.getTrigger());
-
+        m_loader.setExtended(m_driveJoystick.getTrigger());
         m_loader.updateSolenoids();
-
+        
+        
         //********* LAUNCHER *********\\
         // If the launch button is pressed, get ready for its release
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_ON)) {
@@ -204,9 +204,9 @@ public class BetaRobot extends SimpleRobot {
             m_launcher.setOpenLoopEnabled(false);
         }
 
-        if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
             modeRPM = true;
-        } else if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
+        } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
             modeRPM = false;
         }
         // Set the launcher speed to the Z val, and then update the motors
@@ -239,21 +239,30 @@ public class BetaRobot extends SimpleRobot {
      */
     private void operatorDriveSystem() {
 
+         // Set the launcher speed to the Z val, and then update the motors
+        double driveSpeed = m_driveJoystick.getThrottle();
+
+        driveSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
+        driveSpeed = (driveSpeed + 1) / 2;    // Shift to (0,1)
+        
         //Drive the robot with either better turning, or maximum speed depending on the trigger.
         double outputMagnitude = m_driveJoystick.getY();
         double curve = m_driveJoystick.getX();
 
-        if (m_driveJoystick.getTrigger()) {
-            //allow fast speed, but reduce turning
-            outputMagnitude *= 1.0;
-            curve *= 0.8;
-
-        } else {
-            //Drive slow if the trigger is not down
-            outputMagnitude *= 0.6;
-            curve *= 0.7;
-
-        }
+        outputMagnitude = outputMagnitude * (0.5 + 0.5 * driveSpeed); // 0.5 to 1.0
+        curve = curve * (0.7 + 0.2 * driveSpeed); // 0.7 to 0.9
+       
+//        if (m_driveJoystick.getTrigger()) {
+//            //allow fast speed, but reduce turning
+//            outputMagnitude *= 1.0;
+//            curve *= 0.8;
+//
+//        } else {
+//            //Drive slow if the trigger is not down
+//            outputMagnitude *= 0.6;
+//            curve *= 0.7;
+//
+//        }
 
         // Set the orientation (which way is front)
         if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)) {
