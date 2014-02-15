@@ -30,12 +30,18 @@ public class AutoMode {
     public void driveToDistance(double distance, double speed) {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
-        if (distance > currentDistance) {
+        if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
             m_robotDrive.drive(speed, 0);
         }
-        if (distance > currentDistance) {
-            m_robotDrive.drive(speed, 0);
+        if (currentDistance <= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
+            m_robotDrive.drive(-speed, 0);
         }
+
+    }
+
+    public boolean atDistance(double distance) {
+        double currentDistance = m_distanceSensor.getRangeInchs();
+        return RobotConstants.DISTANCE_SENSOR_RANGE >= Math.abs(currentDistance - distance);
 
     }
 
@@ -63,25 +69,37 @@ public class AutoMode {
             m_launcher.setSpeedOpenLoop(speed);
         }
     }
+
     public void stopShooter() {
         m_launcher.setEnabled(false);
     }
+
     public void extendArm() {
         m_intakeArm.setExtended(true);
+        m_intakeArm.updateSolenoids();
     }
+
     public void enableRollers() {
         m_intakeArm.setEnabledRollers(true);
     }
+
     public void disableRollers() {
         m_intakeArm.setEnabledRollers(false);
     }
+
     public void extendLoader() {
         m_loader.setExtended(true);
+        m_loader.updateSolenoids();
     }
+
     public void retractLoader() {
         m_loader.setExtended(false);
+        m_loader.updateSolenoids();
     }
-    public void getCurrentShooterSpeed() {
+
+    public double getCurrentShooterSpeed() {
         //return the speed
+        double rpm = 0;
+        return rpm;
     }
 }
