@@ -56,7 +56,7 @@ public class RobotConstants {
     public static Line LCD_LOADER = DriverStationLCD.Line.kUser3;
     public static Line LCD_DRIVER = DriverStationLCD.Line.kUser4;
 
-    public static Line LCD_STATUS = DriverStationLCD.Line.kUser5;
+    public static Line LCD_RANGE = DriverStationLCD.Line.kUser5;
     public static Line LCD_MODE_MISC = DriverStationLCD.Line.kUser6;
         
 }
