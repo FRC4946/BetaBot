@@ -9,11 +9,9 @@ package org.usfirst.frc4946;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Counter;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the SimpleRobot
@@ -57,8 +55,9 @@ public class BetaRobot extends SimpleRobot {
     public BetaRobot() {
 
         // Set the speed of the motors on the launcher and intake
-        m_intakeArm.setSpeedOpenLoop(12);
+        //m_intakeArm.setSpeedOpenLoop(12);
         m_launcher.setSpeedOpenLoop(3);
+        
     }
 
     /**
@@ -66,7 +65,7 @@ public class BetaRobot extends SimpleRobot {
      */
     public void autonomous() {
 
-        m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering autonomous");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous");
         m_driverStation.updateLCD();
 
         while (isAutonomous() && isEnabled()) {
@@ -109,7 +108,7 @@ public class BetaRobot extends SimpleRobot {
     	
              */
         }
-        m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Finished auto, waiting");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Finished auto, waiting");
         m_driverStation.updateLCD();
 
     }
@@ -119,7 +118,7 @@ public class BetaRobot extends SimpleRobot {
      */
     public void operatorControl() {
 
-        m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Entering operator control");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering operator control");
         m_driverStation.updateLCD();
 
         int m_cycleNumber = 0;
@@ -142,7 +141,7 @@ public class BetaRobot extends SimpleRobot {
 
         }
 
-        m_driverStation.println(DriverStationLCD.Line.kMain6, 1, "Stopping operator control");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Stopping operator control");
         m_driverStation.updateLCD();
 
     }
@@ -160,6 +159,7 @@ public class BetaRobot extends SimpleRobot {
 
             m_intakeArm.setExtended(true);
             m_intakeArm.setEnabledRollers(true);
+            
         }
 
         // Retract and turn off the intake arm
@@ -195,13 +195,13 @@ public class BetaRobot extends SimpleRobot {
         //********* LAUNCHER *********\\
         // If the launch button is pressed, get ready for its release
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_ON)) {
-            m_launcher.setEnabled(true);
+            m_launcher.setOpenLoopEnabled(true);
             m_intakeArm.setExtended(true); // Extend the intake arm, just in case
         }
 
         // If the launch button is released, toggle the state of the solenoid
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
-            m_launcher.setEnabled(false);
+            m_launcher.setOpenLoopEnabled(false);
         }
 
         if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
@@ -219,16 +219,17 @@ public class BetaRobot extends SimpleRobot {
         if (modeRPM == false) {
             launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
             m_launcher.setSpeedOpenLoop(launcherSpeed);
-            m_launcher.setEnabled(m_launcher.isEnabled());
+            m_launcher.setOpenLoopEnabled(m_launcher.isEnabled());
         }
         if (modeRPM == true) {
             launcherSpeed *= RobotConstants.SHOOTER_MAX_RPM;  // Scale to max RPM set in constants
             m_launcher.setSpeedRPM(launcherSpeed);
-            m_launcher.setEnabled(m_launcher.isEnabled());
+            m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
+            
         }
         m_launcher.update();
         
-        m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is " + launcherSpeed + "                 ");
+        m_driverStation.println(RobotConstants.LCD_STATUS, 1, "Speed is " + launcherSpeed + "                 ");
 
     }
 
@@ -267,11 +268,5 @@ public class BetaRobot extends SimpleRobot {
         } else {
             m_robotDrive.arcadeDrive(outputMagnitude * -1, curve * -1, true);
         }
-
-        //********* CONSOLE *********\\
-        m_driverStation.println(DriverStationLCD.Line.kUser3, 1, "Y value is " + outputMagnitude + "                 ");
-        m_driverStation.println(DriverStationLCD.Line.kUser4, 1, "X value is " + curve + "                 ");
-        m_driverStation.println(DriverStationLCD.Line.kUser6, 1, "Dist(inch)  is " + m_distanceSensor.getRangeInchs() + "                 ");
-
     }
 }
