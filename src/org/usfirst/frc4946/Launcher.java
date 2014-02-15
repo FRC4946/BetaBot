@@ -1,6 +1,7 @@
 package org.usfirst.frc4946;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -9,22 +10,34 @@ public class Launcher {
     private final Talon m_launcherTopController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
     private final Talon m_launcherBottomController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
     private final DriverStation m_driverStation;
-
+    DriverStationLCD m_driverStationLCD = DriverStationLCD.getInstance();
+    private final RateCounter m_launcherTopCounter = new RateCounter(RobotConstants.HALL_SENSOR_TOP);
+    private final RateCounter m_launcherBottomCounter = new RateCounter(RobotConstants.HALL_SENSOR_BOT);
+    
     private double speed = 0.0;
     private boolean motorsAreEnabled = false;
 
-    
-    
-    
     Launcher() {
         LiveWindow.addActuator("Shooter", "Top motor", m_launcherTopController);
         LiveWindow.addActuator("Shooter", "Bottom motor", m_launcherBottomController);
+
+        m_launcherBottomCounter.start();
+        m_launcherTopCounter.start();
+        
+        //LiveWindow.addActuator("Shooter", "Top counter", m_launcherTopCounter);
+        //LiveWindow.addActuator("Shooter", "Bottom Counter", m_launcherBottomCounter);
 
         m_driverStation = DriverStation.getInstance();
 
     }
 
     
+    public void update(){
+       m_driverStationLCD.println(DriverStationLCD.Line.kMain6, 1,
+               "T:" + (int) m_launcherTopCounter.getRPM()
+               + " |B:" + (int) m_launcherBottomCounter.getRPM());
+       
+    }
     
     public void toggleEnabled() {
         motorsAreEnabled = !motorsAreEnabled;

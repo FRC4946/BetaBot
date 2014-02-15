@@ -9,10 +9,11 @@ package org.usfirst.frc4946;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.Counter;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the SimpleRobot
@@ -46,6 +47,7 @@ public class BetaRobot extends SimpleRobot {
     protected void robotInit() {
         // Start the compressor, let it do it's thing. It will turn on and off automatically to regulate pressure.
         m_primaryCompressor.start();
+        modeRPM = false;
 
     }
 
@@ -133,6 +135,7 @@ public class BetaRobot extends SimpleRobot {
             operatorTaskSystem();
 
             if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
+                  
                 m_driverStation.updateLCD();
                 m_cycleNumber = 0;
             }
@@ -213,17 +216,18 @@ public class BetaRobot extends SimpleRobot {
         launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
         //launcherSpeed *= 7.0;                       // Scale to 7v
 
-        if (modeRPM = false) {
+        if (modeRPM == false) {
             launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
             m_launcher.setSpeedOpenLoop(launcherSpeed);
             m_launcher.setEnabled(m_launcher.isEnabled());
         }
-        if (modeRPM = true) {
+        if (modeRPM == true) {
             launcherSpeed *= RobotConstants.SHOOTER_MAX_RPM;  // Scale to max RPM set in constants
             m_launcher.setSpeedRPM(launcherSpeed);
             m_launcher.setEnabled(m_launcher.isEnabled());
         }
-
+        m_launcher.update();
+        
         m_driverStation.println(DriverStationLCD.Line.kUser5, 1, "Speed is " + launcherSpeed + "                 ");
 
     }
