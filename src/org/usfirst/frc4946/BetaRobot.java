@@ -130,8 +130,6 @@ public class BetaRobot extends SimpleRobot {
      * once every loop of the operator control cycle.
      */
     private void operatorTaskSystem() {
-		//TODO: Decide on buttons for the pneumatic controls. Current ones are just for debug
-
         //********* INTAKE *********\\
         // Extend and turn on the intake arm
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
@@ -175,18 +173,27 @@ public class BetaRobot extends SimpleRobot {
         //********* LAUNCHER *********\\
         // If the launch button is pressed, get ready for its release
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_ON)) {
-            m_launcher.setOpenLoopEnabled(true);
+            if(modeRPM){
+                 m_launcher.setOpenLoopEnabled(true);
+            }
+            else{
+                m_launcher.setClosedLoopEnabled(true);
+            }
             m_intakeArm.setExtended(true); // Extend the intake arm, just in case
         }
 
         // If the launch button is released, toggle the state of the solenoid
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
-            m_launcher.setOpenLoopEnabled(false);
+            if(modeRPM){
+                 m_launcher.setOpenLoopEnabled(true);
+            }
+            else{
+                m_launcher.setClosedLoopEnabled(true);
+            }
         }
 
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
             modeRPM = true;
-            
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
             modeRPM = false;
             
