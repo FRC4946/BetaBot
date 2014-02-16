@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.RobotDrive;
  *
  * @author Stefan
  */
-public class AutoMoveAndShoot extends AutoMode {
-
+public class AutoMove extends AutoMode {
+    
     AutoMode autoRoutine = new AutoMode(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
-
-    public AutoMoveAndShoot(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
+    
+    public AutoMove(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
         super(drive, launcher, loader, intakeArm, distanceSensor);
     }
 
@@ -26,8 +26,8 @@ public class AutoMoveAndShoot extends AutoMode {
     }
 
     public void run() {
-        autoRoutine.driveToDistance(16*12, 0.4);
-        if (atDistance(16*12)&&autoRoutine.getCurrentShooterSpeed() >= 2300 && autoRoutine.getCurrentShooterSpeed() <= 2700) {
+        autoRoutine.driveDistance(6*12, 0.4);
+        if (atDistance(6*12)) {
             autoRoutine.extendLoader();
         }
     }

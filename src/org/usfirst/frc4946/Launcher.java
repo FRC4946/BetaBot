@@ -127,6 +127,10 @@ public class Launcher {
         speedClosedLoop = rpm;
         
     }
+    public double getSpeedRPM() {
+        double rpm= m_launcherTopCounter.getRPM();
+        return rpm;    
+    }
 
     public boolean isClosedLoopControl() {
             return isClosedLoopControl;

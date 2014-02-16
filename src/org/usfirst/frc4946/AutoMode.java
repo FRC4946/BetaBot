@@ -99,7 +99,7 @@ public class AutoMode {
 
     public double getCurrentShooterSpeed() {
         //return the speed
-        double rpm = 0;
+        double rpm = m_launcher.getSpeedRPM();
         return rpm;
     }
 }
