@@ -1,5 +1,8 @@
 package org.usfirst.frc4946;
 
+import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.DriverStationLCD.Line;
+
 public class RobotConstants {
 
     //*** Motors ***\\
@@ -46,5 +49,14 @@ public class RobotConstants {
     public static int HALL_SENSOR_BOT=3;
     public static int SHOOTER_MAX_VOLTAGE=7;
     public static int SHOOTER_MAX_RPM=5000;
-    public static int DISTANCE_SENSOR_RANGE=5;
+    
+    
+    public static Line LCD_LAUNCHER = DriverStationLCD.Line.kUser1;
+    public static Line LCD_INTAKE = DriverStationLCD.Line.kUser2;
+    public static Line LCD_LOADER = DriverStationLCD.Line.kUser3;
+    public static Line LCD_DRIVER = DriverStationLCD.Line.kUser4;
+
+    public static Line LCD_RANGE = DriverStationLCD.Line.kUser5;
+    public static Line LCD_MODE_MISC = DriverStationLCD.Line.kUser6;
+        
 }
