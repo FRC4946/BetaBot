@@ -20,15 +20,16 @@ public class AutoMove extends AutoMode {
     }
 
     public void init() {
-        autoRoutine.extendArm();
-        autoRoutine.startShooter();
-        autoRoutine.setShooterSpeed(2500, true);
+        
     }
 
     public void run() {
         autoRoutine.driveDistance(6*12, 0.4);
         if (atDistance(6*12)) {
+            //celebrate we drove distance
             autoRoutine.extendLoader();
+            //do donuts
+            autoRoutine.drive(0, 0.5);
         }
     }
 }

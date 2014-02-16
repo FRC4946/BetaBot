@@ -31,12 +31,15 @@ public class AutoMode {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
         if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            m_robotDrive.drive(speed, 0);
+            drive(speed,0);
         }
         if (currentDistance <= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            m_robotDrive.drive(-speed, 0);
+            drive(-speed,0);
         }
 
+    }
+    public void drive(double speed,double turn){
+        m_robotDrive.drive(speed, turn);
     }
 
     public boolean atDistance(double distance) {
