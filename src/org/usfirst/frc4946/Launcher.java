@@ -27,7 +27,7 @@ public class Launcher {
     //VelocityControl m_bottomVelocity = new PIDControl(m_launcherBottomCounter, m_launcherBottomController);
     
     //-------------------------------
-    //Open look control
+    //Open loop control
     private double speedOpenLoop = 0.0;
     private boolean motorsAreEnabled = false;
     
@@ -58,12 +58,14 @@ public class Launcher {
             m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
                     (int) m_topVelocity.getTargetSpeed()
                     + "|T:" + (int) m_launcherTopCounter.getRPM()
-                    + "|B:" + (int) m_launcherBottomCounter.getRPM());
+                    + "|B:" + (int) m_launcherBottomCounter.getRPM()
+                    + "                         ");
 
         } else {
             m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-                    "|T:" + (int) m_launcherTopCounter.getRPM()
-                    + "|B:" + (int) m_launcherBottomCounter.getRPM());
+                    "T:" + (int) m_launcherTopCounter.getRPM()
+                    + "|B:" + (int) m_launcherBottomCounter.getRPM()
+                    + "                         ");
 
         }
     }

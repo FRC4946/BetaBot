@@ -64,7 +64,7 @@ public class BetaRobot extends SimpleRobot {
      */
     public void autonomous() {
 
-        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous                    ");
         m_driverStation.updateLCD();
         
         AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
@@ -83,7 +83,7 @@ public class BetaRobot extends SimpleRobot {
                 m_cycleNumber = 0;
             }
         }
-        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Finished auto, waiting");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Finished auto, waiting                   ");
         m_driverStation.updateLCD();
 
     }
@@ -93,7 +93,7 @@ public class BetaRobot extends SimpleRobot {
      */
     public void operatorControl() {
 
-        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering operator control");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering operator control                 ");
         m_driverStation.updateLCD();
 
         int m_cycleNumber = 0;
@@ -108,7 +108,7 @@ public class BetaRobot extends SimpleRobot {
             //Call the task oriented code
             operatorTaskSystem();
 
-            m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs()+ "\"");
+            m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs()+ "\"            ");
 
             if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
                   
@@ -120,7 +120,7 @@ public class BetaRobot extends SimpleRobot {
 
                 
         
-        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Stopping operator control");
+        m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Stopping operator control           ");
         m_driverStation.updateLCD();
 
     }
@@ -198,7 +198,6 @@ public class BetaRobot extends SimpleRobot {
 
             launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
             launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
-            //launcherSpeed *= 7.0;                       // Scale to 7v
 
             launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
             m_launcher.setSpeedOpenLoop(launcherSpeed);
@@ -206,7 +205,7 @@ public class BetaRobot extends SimpleRobot {
             m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed: " + launcherSpeed + "                 ");
 
         }
-        if (modeRPM == true) {
+        else if (modeRPM == true) {
             // Set the launcher speed to the Z val, and then update the motors
             double launcherSpeed = m_taskJoystick.getZ();
 

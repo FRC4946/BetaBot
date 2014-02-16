@@ -27,18 +27,18 @@ public class AutoMoveAndShoot extends AutoMode {
         atDistanceCount = 0;
 
         extendArm();
-        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "EXTENDED ARM");
+        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "EXTENDED ARM            ");
         m_driverStation.updateLCD();
         startShooter(true);
         setShooterSpeed(1425, true);
-        m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "SHOOTER ON 1800");
+        m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "SHOOTER ON 1800               ");
     }
     int atDistanceCount = 0;
 
     public void run() {
         m_launcher.update();
         counter++;
-        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs());
+        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs()+"                          ");
         if (step == 0 && counter > 400) {
             driveToDistance(10 * 12, 0.35);
 
@@ -58,13 +58,13 @@ public class AutoMoveAndShoot extends AutoMode {
             step = 1;
             drive(0.0, 0.0);
             counter = 0;
-            m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "AT DIS & SPEED   ");
+            m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "AT DIS & SPEED               ");
         }
 
         if (step == 1 && counter > 100) {
 
             extendLoader();
-            m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING");
+            m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING                       ");
         }
     }
 
