@@ -24,7 +24,13 @@ public abstract class VelocityControl {
     abstract public void enable(boolean enable);
     
     abstract public void update();
-
+    protected boolean m_isReversed = false;
+    
+    public void setIsReversed(boolean reversed){
+        
+        m_isReversed= reversed;
+        
+    }
     public VelocityControl( RateCounter counter, SpeedController ctrl){
         m_counter = counter;
         m_speedControl = ctrl;    

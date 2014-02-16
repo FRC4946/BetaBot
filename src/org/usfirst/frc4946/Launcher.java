@@ -44,7 +44,7 @@ public class Launcher {
         
         m_launcherBottomCounter.start();
         m_launcherTopCounter.start();
-        
+        m_bottomVelocity.setIsReversed(true);
 
     }
     

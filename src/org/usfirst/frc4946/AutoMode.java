@@ -5,19 +5,21 @@
  */
 package org.usfirst.frc4946;
 
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  *
  * @author Stefan
  */
-public class AutoMode {
+public abstract class AutoMode {
 
     RobotDrive m_robotDrive;
     Launcher m_launcher;
     Loader m_loader;
     IntakeArm m_intakeArm;
     DistanceSensor m_distanceSensor;
+    protected DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
 
     AutoMode(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
         m_robotDrive = drive;
@@ -29,21 +31,22 @@ public class AutoMode {
 
     protected boolean shooterIsAtTargetSpeed() {
         return getCurrentShooterSpeed() >= 1700 && getCurrentShooterSpeed() <= 1900;
-        
+
     }
-    
+
     public void driveToDistance(double distance, double speed) {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
         if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            drive(speed,0);
+            drive(speed, -0.001);
         }
         if (currentDistance <= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            drive(-speed,0);
+            drive(-speed, 0);
         }
 
     }
-    public void drive(double speed,double turn){
+
+    public void drive(double speed, double turn) {
         m_robotDrive.drive(speed, turn);
     }
 
@@ -65,30 +68,36 @@ public class AutoMode {
         //needs work, potentially use the gyro,compass, combo part we have?
     }
 
+    public void updateShooter(boolean closedLoop) {
+        m_launcher.update();
+    }
+
     public void startShooter(boolean closedLoop) {
-        if( closedLoop )
+        if (closedLoop) {
             m_launcher.setClosedLoopEnabled(true);
-        else
+        } else {
             m_launcher.setOpenLoopEnabled(true);
-        
+        }
+
     }
 
     public void setShooterSpeed(double speed, boolean closedLoop) {
         if (closedLoop == true) {
             m_launcher.setSpeedRPM(speed);
-        
-        }else{
+
+        } else {
             m_launcher.setSpeedOpenLoop(speed);
-            
+
         }
     }
 
     public void stopShooter(boolean closedLoop) {
-        if( closedLoop )
+        if (closedLoop) {
             m_launcher.setClosedLoopEnabled(false);
-        else
+        } else {
             m_launcher.setOpenLoopEnabled(false);
-        
+        }
+
     }
 
     public void extendArm() {

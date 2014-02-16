@@ -16,7 +16,7 @@ import org.usfirst.frc4946.RobotConstants;
  */
 public class PIDControl extends VelocityControl{
     //PID parameters
-    private final double m_KP = 0.001; // error of 100RPM -> 0.1V change for command?
+    private final double m_KP = 0.2; // error of 100RPM -> 0.1V change for command?
     private final double m_KD = 0;
     private final double m_ClosedLoopTolerance = 2; //percent
     

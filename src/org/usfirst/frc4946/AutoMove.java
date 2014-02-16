@@ -22,13 +22,15 @@ public class AutoMove extends AutoMode {
     }
 
     public void run() {
-        driveDistance(6*12, 0.4);
+        driveToDistance(12*12, 0.4);
+        m_driverStation.println(RobotConstants.AUTO_LCD_DRIVER, 1, "Driving to 12 ft at 0.4");
         
-        if (atDistance(6*12)) {
+        if (atDistance(12*12)) {
             //celebrate we drove distance
+            m_driverStation.println(RobotConstants.AUTO_LCD_DRIVER, 1, "AT DIST 12ft");
             extendLoader();
             //do donuts
-            drive(0, 0.5);
+            //drive(0, 0.5);
         }
     }
 }

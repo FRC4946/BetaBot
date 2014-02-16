@@ -33,7 +33,9 @@ public class BangBangControl extends VelocityControl{
         double curSpeed = m_counter.getRPM();
         
         double fullPower = 11.0 / m_driverStation.getBatteryVoltage();
-       
+       if (m_isReversed){
+           fullPower*=-1;
+       }
         if( m_enabled){
             if (curSpeed < m_targetRPM ) {
                 m_speedControl.set(fullPower);

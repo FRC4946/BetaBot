@@ -68,11 +68,20 @@ public class BetaRobot extends SimpleRobot {
         m_driverStation.updateLCD();
         
         AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        //AutoMove m_routine = new AutoMove(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        int m_cycleNumber = 0;
         m_routine.init();
         
         while (isAutonomous() && isEnabled()) {
+            
+            m_cycleNumber++;
             m_routine.run();
-        
+            
+            if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
+                  
+                m_driverStation.updateLCD();
+                m_cycleNumber = 0;
+            }
         }
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Finished auto, waiting");
         m_driverStation.updateLCD();
@@ -99,6 +108,8 @@ public class BetaRobot extends SimpleRobot {
             //Call the task oriented code
             operatorTaskSystem();
 
+            m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs()+ "\"");
+
             if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
                   
                 m_driverStation.updateLCD();
@@ -108,7 +119,6 @@ public class BetaRobot extends SimpleRobot {
         }
 
                 
-        m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs()+ "\"");
         
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Stopping operator control");
         m_driverStation.updateLCD();
@@ -136,6 +146,7 @@ public class BetaRobot extends SimpleRobot {
 
             m_intakeArm.setExtended(false);
             m_intakeArm.setEnabledRollers(false);
+            m_launcher.setClosedLoopEnabled(false);
         }
 
         m_intakeArm.updateSolenoids();
