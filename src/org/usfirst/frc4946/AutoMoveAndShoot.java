@@ -22,12 +22,12 @@ public class AutoMoveAndShoot extends AutoMode {
     public void init() {
         autoRoutine.extendArm();
         autoRoutine.startShooter();
-        autoRoutine.setShooterSpeed(2500, true);
+        autoRoutine.setShooterSpeed(1800, true);
     }
 
     public void run() {
         autoRoutine.driveToDistance(16*12, 0.4);
-        if (atDistance(16*12)&&autoRoutine.getCurrentShooterSpeed() >= 2300 && autoRoutine.getCurrentShooterSpeed() <= 2700) {
+        if (atDistance(16*12)&&autoRoutine.getCurrentShooterSpeed() >= 1700 && autoRoutine.getCurrentShooterSpeed() <= 1900) {
             autoRoutine.extendLoader();
         }
     }
