@@ -27,6 +27,11 @@ public class AutoMode {
         m_distanceSensor = distanceSensor;
     }
 
+    protected boolean shooterIsAtTargetSpeed() {
+        return getCurrentShooterSpeed() >= 1700 && getCurrentShooterSpeed() <= 1900;
+        
+    }
+    
     public void driveToDistance(double distance, double speed) {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
@@ -60,21 +65,30 @@ public class AutoMode {
         //needs work, potentially use the gyro,compass, combo part we have?
     }
 
-    public void startShooter() {
-        m_launcher.setOpenLoopEnabled(true);
+    public void startShooter(boolean closedLoop) {
+        if( closedLoop )
+            m_launcher.setClosedLoopEnabled(true);
+        else
+            m_launcher.setOpenLoopEnabled(true);
+        
     }
 
-    public void setShooterSpeed(double speed, boolean mode) {
-        if (mode = true) {
+    public void setShooterSpeed(double speed, boolean closedLoop) {
+        if (closedLoop == true) {
             m_launcher.setSpeedRPM(speed);
-        }
-        if (mode = false) {
+        
+        }else{
             m_launcher.setSpeedOpenLoop(speed);
+            
         }
     }
 
-    public void stopShooter() {
-        m_launcher.setOpenLoopEnabled(false);
+    public void stopShooter(boolean closedLoop) {
+        if( closedLoop )
+            m_launcher.setClosedLoopEnabled(false);
+        else
+            m_launcher.setOpenLoopEnabled(false);
+        
     }
 
     public void extendArm() {
