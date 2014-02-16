@@ -4,83 +4,92 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc4946.closedLoop.BangBangControl;
+import org.usfirst.frc4946.closedLoop.PIDControl;
+import org.usfirst.frc4946.closedLoop.VelocityControl;
 
 public class Launcher {
 
+    //Motor contorl
     private final Talon m_launcherTopController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_TOP);
     private final Talon m_launcherBottomController = new Talon(RobotConstants.PWM_MOTOR_LAUNCHER_BOTTOM);
 
+    //Hall sensors
     private final RateCounter m_launcherTopCounter = new RateCounter(RobotConstants.HALL_SENSOR_TOP);
     private final RateCounter m_launcherBottomCounter = new RateCounter(RobotConstants.HALL_SENSOR_BOT);
 
-    private final DriverStation m_driverStation;
-    DriverStationLCD m_driverStationLCD = DriverStationLCD.getInstance();
+    //-------------------------------
+    VelocityControl m_topVelocity = new BangBangControl(m_launcherTopCounter, m_launcherTopController);
+    VelocityControl m_bottomVelocity = new BangBangControl(m_launcherBottomCounter, m_launcherBottomController);
+         
+    //Alternate control
+    //VelocityControl m_topVelocity = new PIDControl(m_launcherTopCounter, m_launcherTopController);
+    //VelocityControl m_bottomVelocity = new PIDControl(m_launcherBottomCounter, m_launcherBottomController);
     
+    //-------------------------------
+    //Open look control
     private double speedOpenLoop = 0.0;
-    private double speedClosedLoop = 0;
-    
     private boolean motorsAreEnabled = false;
-
-    private boolean isClosedLoopControl = false;
     
+    //-------------------------------
+    private final DriverStation m_driverStation = DriverStation.getInstance();
+    DriverStationLCD m_driverStationLCD = DriverStationLCD.getInstance();
+
+    //-------------------------------
+    private boolean isClosedLoopControl = false;
+
     Launcher() {
         LiveWindow.addActuator("Shooter", "Top motor", m_launcherTopController);
         LiveWindow.addActuator("Shooter", "Bottom motor", m_launcherBottomController);
-
+        
         m_launcherBottomCounter.start();
         m_launcherTopCounter.start();
         
-        m_driverStation = DriverStation.getInstance();
 
     }
-
     
-    public void update(){
-       
-       if( isClosedLoopControl && motorsAreEnabled){
-          
-           double bottomSpeed = m_launcherBottomCounter.getRPM();
-           if( bottomSpeed < speedClosedLoop )
-               m_launcherBottomController.set(-1);
-           else
-               m_launcherBottomController.set(0);
-           
-           double topSpeed = m_launcherTopCounter.getRPM();
-           if( topSpeed < speedClosedLoop )
-               m_launcherTopController.set(1);
-           else
-               m_launcherTopController.set(0);
-           
-           String top = topSpeed < speedClosedLoop ? "|T:": "|t:" ;
-           String bottom = bottomSpeed < speedClosedLoop ? "|B:": "|b:" ;
-           
-           m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-            (int) speedClosedLoop 
-            + top + (int) m_launcherTopCounter.getRPM()
-            + bottom + (int) m_launcherBottomCounter.getRPM());
-       
-       }else{ 
+    public void update() {
+
+        if (isClosedLoopControl) {
+
+            m_topVelocity.update();
+            m_bottomVelocity.update();
+            
             m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-               "|T:" + (int) m_launcherTopCounter.getRPM()
-               + "|B:" + (int) m_launcherBottomCounter.getRPM());
-       }
+                    (int) m_topVelocity.getTargetSpeed()
+                    + "|T:" + (int) m_launcherTopCounter.getRPM()
+                    + "|B:" + (int) m_launcherBottomCounter.getRPM());
+
+        } else {
+            m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
+                    "|T:" + (int) m_launcherTopCounter.getRPM()
+                    + "|B:" + (int) m_launcherBottomCounter.getRPM());
+
+        }
     }
-    
+
     public void toggleEnabled() {
         motorsAreEnabled = !motorsAreEnabled;
-        if( isClosedLoopControl)
+        if (isClosedLoopControl) {
             setClosedLoopEnabled(motorsAreEnabled);
-        else
+            
+        } else {
             setOpenLoopEnabled(motorsAreEnabled);
-        
+            
+        }
+
     }
 
-    public void setClosedLoopEnabled(boolean isEnabled){
+    public void setClosedLoopEnabled(boolean isEnabled) {
         isClosedLoopControl = isEnabled;
         motorsAreEnabled = isEnabled;
 
-    } 
-    
+        //Enable the velocity controllers
+        m_topVelocity.enable(isEnabled);
+        m_bottomVelocity.enable(isEnabled);
+        
+    }
+
     /**
      * Start or stop the motors. If the speed has been changed, call
      * setEnabled(true) to update the motors.
@@ -93,20 +102,20 @@ public class Launcher {
 
         if (isEnabled) {
             m_launcherTopController.set(speedOpenLoop);
-            m_launcherBottomController.set(speedOpenLoop * -1);
+            m_launcherBottomController.set(speedOpenLoop*-1);
+            
         } else {
             m_launcherTopController.set(0.0);
             m_launcherBottomController.set(0.0);
+            
         }
     }
 
     public boolean isEnabled() {
         return motorsAreEnabled;
+        
     }
 
-    
-    
-    
     /**
      * Set the speed of the motors without checking the result. After calling
      * this, call setEnabled(true) to update the motors.
@@ -124,16 +133,20 @@ public class Launcher {
     }
 
     public void setSpeedRPM(double rpm) {
-        speedClosedLoop = rpm;
+        
+        m_topVelocity.setTargetRPM(rpm);
+        m_bottomVelocity.setTargetRPM(rpm);
         
     }
+
     public double getSpeedRPM() {
-        double rpm= m_launcherTopCounter.getRPM();
-        return rpm;    
+        return m_launcherTopCounter.getRPM();
+        
     }
 
     public boolean isClosedLoopControl() {
-            return isClosedLoopControl;
-    
+        return isClosedLoopControl;
+
     }
 }
+
