@@ -39,14 +39,13 @@ public class BetaRobot extends SimpleRobot {
 
     boolean buttonIntakeRollerIsDown = false;
     boolean intakeIsRear = true;
-    public boolean modeRPM = false;
+    public boolean modeRPM = true;
 
     //This function called once at system start.
     protected void robotInit() {
         // Start the compressor, let it do it's thing. It will turn on and off automatically to regulate pressure.
         m_primaryCompressor.start();
-        modeRPM = false;
-
+        
     }
 
     /**
@@ -67,47 +66,13 @@ public class BetaRobot extends SimpleRobot {
 
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous");
         m_driverStation.updateLCD();
+        
         AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         m_routine.init();
         
         while (isAutonomous() && isEnabled()) {
             m_routine.run();
-        //TODO: The autonomous stuff
-            // Check for hotzone?
-            // Aim towards hotzone?
-            // Shoot the ball
-            // Move forwards
-        /* 
-    	
-             //TODO: Hotzone stuff?
-    	
-    	
-             // Shoot the ball
-    	
-             m_launcher.setEnabled(true);
-    	
-             Timer.delay(0.1);
-    	
-             m_loader.setLiftBall(true);
-    	
-             Timer.delay(0.8);
-    	
-             m_launcher.setEnabled(false);
-             m_loader.setLiftBall(false);
-    	
-    	
-    	
-             // Move forwards
-    	
-             m_robotDrive.drive(0.5, 0);
-    	
-             Timer.delay(3);
-    	
-             m_robotDrive.drive(0,0);
-    	
-
-    	
-             */
+        
         }
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Finished auto, waiting");
         m_driverStation.updateLCD();
@@ -210,8 +175,10 @@ public class BetaRobot extends SimpleRobot {
 
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
             modeRPM = true;
+            
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
             modeRPM = false;
+            
         }
 
         if (modeRPM == false) {
@@ -225,7 +192,7 @@ public class BetaRobot extends SimpleRobot {
             launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
             m_launcher.setSpeedOpenLoop(launcherSpeed);
             m_launcher.setOpenLoopEnabled(m_launcher.isEnabled());
-            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed is " + launcherSpeed + "                 ");
+            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed: " + launcherSpeed + "                 ");
 
         }
         if (modeRPM == true) {
@@ -233,17 +200,16 @@ public class BetaRobot extends SimpleRobot {
             double launcherSpeed = m_taskJoystick.getZ();
 
             launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
-            
             launcherSpeed = 1850 + ( launcherSpeed * 500);
-//            launcherSpeed *= RobotConstants.SHOOTER_MAX_RPM;  // Scale to max RPM set in constants
+
             m_launcher.setSpeedRPM(launcherSpeed);
             m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
-            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed is " + launcherSpeed + "                 ");
+            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed: " + launcherSpeed + "                 ");
             
         }
-        m_launcher.update();
         
-
+        m_launcher.update();
+     
     }
 
     /**

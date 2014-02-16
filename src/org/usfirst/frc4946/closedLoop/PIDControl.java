@@ -48,8 +48,8 @@ public class PIDControl extends VelocityControl{
     }
  
     public void setTargetRPM(double rpm){
+        super.setTargetRPM(rpm);
         m_pid.setSetpoint(rpm);
         
-
     }
 }
