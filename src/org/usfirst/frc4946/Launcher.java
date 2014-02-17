@@ -59,7 +59,8 @@ public class Launcher {
             double bottomDifference = m_launcherBottomCounter.getRPM() - m_topVelocity.getTargetSpeed();
             
             m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-                    "T:" + (int) topDifference
+                    "TCmd:" + m_topVelocity.getTargetSpeed() 
+                    + "T:" + (int) topDifference
                     + "|B:" + (int) bottomDifference
                     + "                         ");
 

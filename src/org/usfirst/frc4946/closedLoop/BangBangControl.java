@@ -32,7 +32,7 @@ public class BangBangControl extends VelocityControl {
         double curSpeed = m_counter.getRPM();
 
         double fullPower = 11.0 / m_driverStation.getBatteryVoltage();
-        double lowPower = 1;
+        double lowPower = 1 / m_driverStation.getBatteryVoltage();;
 
         if (m_isReversed) {
             fullPower *= -1;
