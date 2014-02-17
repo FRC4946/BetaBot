@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Autonumous routine:
+ *    1. Shoot the first ball
+ *    2. Pick up second car
+ *    3. Shoot the second ball
+ *    4. Move forwards, until 8 feet away
  */
+
 package org.usfirst.frc4946;
 
 import edu.wpi.first.wpilibj.RobotDrive;
