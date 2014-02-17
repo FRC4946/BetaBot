@@ -46,7 +46,7 @@ public class BangBangControl extends VelocityControl {
 
             } else {
                 //Consider changing to a partial command, to prevent brakes coming on...
-                m_speedControl.set(lowPower);
+                m_speedControl.set(0);
 
             }
         } else {

@@ -139,7 +139,6 @@ public class BetaRobot extends SimpleRobot {
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
 
             m_intakeArm.setExtended(true);
-            m_intakeArm.setEnabledRollers(true);
             
         }
 
@@ -147,8 +146,6 @@ public class BetaRobot extends SimpleRobot {
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_IN)) {
 
             m_intakeArm.setExtended(false);
-            m_intakeArm.setEnabledRollers(false);
-            m_launcher.setClosedLoopEnabled(false);
         }
 
         m_intakeArm.updateSolenoids();
@@ -189,9 +186,10 @@ public class BetaRobot extends SimpleRobot {
         // If the launch button is released, toggle the state of the solenoid
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
             if(modeRPM){
-                 m_launcher.setOpenLoopEnabled(true);
-            } else{
-                m_launcher.setClosedLoopEnabled(true);
+                 m_launcher.setOpenLoopEnabled(false);
+            }
+            else{
+                m_launcher.setClosedLoopEnabled(false);
             }
         }
         // Decide whether to used open or closed loop control
