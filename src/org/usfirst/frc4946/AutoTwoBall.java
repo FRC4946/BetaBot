@@ -14,41 +14,76 @@ import edu.wpi.first.wpilibj.RobotDrive;
 public class AutoTwoBall extends AutoMode {
 
     //AutoMode autoRoutine = new AutoMode(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
-    int ballsFired = 0;
+    int step = 0;
+    int counter = 0;
 
     public AutoTwoBall(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
         super(drive, launcher, loader, intakeArm, distanceSensor);
     }
 
     public void init() {
-        extendArm();
+        step = 0;
+        counter = 0;
+        atDistanceCount = 0;
+
         startShooter(true);
-        setShooterSpeed(1800, true);
+        setShooterSpeed(1750, true);
+        m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "SHOOTER ON 1750               ");
     }
+    int atDistanceCount = 0;
 
     public void run() {
-        if (ballsFired == 0) {
-            if (shooterIsAtTargetSpeed()) {
-                extendLoader();
-                ballsFired++;
-                setShooterSpeed(1800, true);
-            }
+        m_launcher.update();
+        counter++;
+        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs()+"                          ");
+        if (step == 0 && shooterIsAtTargetSpeed(1750)) {
+           m_loader.setExtended(true);
+           step=1;
+           counter=0;
+           m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING 1                       ");
         }
-        if (ballsFired == 1) {
-            enableRollers();
-            driveToDistance((18.5 * 12.0), 0.4);
-            if (atDistance(18.5 * 12.0)) {
-                ballsFired++;
-            }
 
+        if (step == 1 && counter>30) {
+            m_loader.setExtended(false);
+            m_intakeArm.setExtended(true);
+            m_intakeArm.setEnabledRollers(true);
+            step=2;
+            counter=0;
         }
-        if (ballsFired == 2) {
-            disableRollers(); 
-            driveToDistance((16 * 12.0), 0.4);
-            if (atDistance(16 * 12.0) && shooterIsAtTargetSpeed()) {
-                extendLoader();
+        
+        if (step == 2 && shooterIsAtTargetSpeed(1750) && counter > 30) {
+           m_loader.setExtended(true);
+           step=3;
+           counter=0;
+           m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING 2                       ");
+        }
 
+        if (step == 3 && counter>30) {
+            m_loader.setExtended(false);
+            m_intakeArm.setEnabledRollers(false);
+            step=4;
+            counter=0;
+        }
+        
+        if(step == 4 && counter>100){
+            driveToDistance(8 * 12, 0.6);
+        }
+        
+        if (atDistance(8 * 12) && step == 4) {
+            atDistanceCount++;
+            if (atDistanceCount > 2) {
+                drive(0.0, 0.0);
             }
+        } else {
+            atDistanceCount = 0;
+        }
+        
+        if (atDistanceCount > 10 && step == 4) {
+            step = 5;
+            drive(0.0, 0.0);
+            counter = 0;
+            m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "AT DIS               ");
         }
     }
+
 }
