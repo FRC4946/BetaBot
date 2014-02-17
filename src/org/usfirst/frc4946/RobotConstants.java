@@ -31,8 +31,11 @@ public class RobotConstants {
     public static final int BALL_LOWER_VALVE_RELAY = 4; // The valve to lower the ball lifter
 
     //*** Buttons ***\\
-public static int JOYSTICK_BUTTON_INTAKE_OUT = 6;
+    public static int JOYSTICK_BUTTON_INTAKE_OUT = 6;
     public static int JOYSTICK_BUTTON_INTAKE_IN = 7;
+    public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE = 4;
+    public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO = 3;
+    public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE = 5;
     public static int JOYSTICK_BUTTON_LAUNCHER_ON = 11;
     public static int JOYSTICK_BUTTON_LAUNCHER_OFF = 10;
     public static int JOYSTICK_BUTTON_INTAKE_ROLLER = 2;

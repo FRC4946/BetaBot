@@ -40,6 +40,10 @@ public class BetaRobot extends SimpleRobot {
     boolean buttonIntakeRollerIsDown = false;
     boolean intakeIsRear = true;
     public boolean modeRPM = true;
+    
+    double launcherSpeed = 0.0;
+    double oldLauncherSpeed = 0.0;
+    boolean speedIsPreset = false;
 
     //This function called once at system start.
     protected void robotInit() {
@@ -186,23 +190,50 @@ public class BetaRobot extends SimpleRobot {
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
             if(modeRPM){
                  m_launcher.setOpenLoopEnabled(true);
-            }
-            else{
+            } else{
                 m_launcher.setClosedLoopEnabled(true);
             }
         }
-
+        // Decide whether to used open or closed loop control
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_RPM_MODE)) {
             modeRPM = true;
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
             modeRPM = false;
             
         }
-
-        if (modeRPM == false) {
+        
+        // If the slider has been changed, disable the preset
+        if(speedIsPreset && m_taskJoystick.getZ() != oldLauncherSpeed){
+          speedIsPreset = false;
+        }
+        
+        // Set the speed to the presets
+        if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE)){
+            modeRPM = true;
+            launcherSpeed = 1400;
+            speedIsPreset = true;
+        }
+        else if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO)){
+            modeRPM = true;
+            launcherSpeed = 1450;
+            speedIsPreset = true;
+        }
+        else if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE)){
+            modeRPM = true;
+            launcherSpeed = 1500;
+            speedIsPreset = true;
+        }
+        
+        // If the speed was not last set using the preset buttons, read from the slider
+        if(!speedIsPreset){
             // Set the launcher speed to the Z val, and then update the motors
-            double launcherSpeed = m_taskJoystick.getZ();
-
+            launcherSpeed = m_taskJoystick.getZ();
+            oldLauncherSpeed = launcherSpeed;
+        }
+        
+        
+        // Set the speed of the motors
+        if (modeRPM == false) {
             launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
             launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
 
@@ -213,9 +244,6 @@ public class BetaRobot extends SimpleRobot {
 
         }
         else if (modeRPM == true) {
-            // Set the launcher speed to the Z val, and then update the motors
-            double launcherSpeed = m_taskJoystick.getZ();
-
             launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
             launcherSpeed = 1850 + ( launcherSpeed * 500);
 
