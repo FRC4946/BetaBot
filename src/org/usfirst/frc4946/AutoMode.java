@@ -29,8 +29,8 @@ public abstract class AutoMode {
         m_distanceSensor = distanceSensor;
     }
 
-    protected boolean shooterIsAtTargetSpeed() {
-        return getCurrentShooterSpeed() >= 1700 && getCurrentShooterSpeed() <= 1900;
+    protected boolean shooterIsAtTargetSpeed(double speed) {
+        return getCurrentShooterSpeed() >= (speed-50) && getCurrentShooterSpeed() <= (speed+50);
 
     }
 

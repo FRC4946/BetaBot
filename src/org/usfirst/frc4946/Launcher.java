@@ -55,10 +55,12 @@ public class Launcher {
             m_topVelocity.update();
             m_bottomVelocity.update();
             
+            double topDifference = m_launcherTopCounter.getRPM() - m_topVelocity.getTargetSpeed();
+            double bottomDifference = m_launcherBottomCounter.getRPM() - m_topVelocity.getTargetSpeed();
+            
             m_driverStationLCD.println(RobotConstants.LCD_LAUNCHER, 1,
-                    (int) m_topVelocity.getTargetSpeed()
-                    + "|T:" + (int) m_launcherTopCounter.getRPM()
-                    + "|B:" + (int) m_launcherBottomCounter.getRPM()
+                    "T:" + (int) topDifference
+                    + "|B:" + (int) bottomDifference
                     + "                         ");
 
         } else {

@@ -242,9 +242,11 @@ public class BetaRobot extends SimpleRobot {
 
         }
         else if (modeRPM == true) {
-            launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
-            launcherSpeed = 1850 + ( launcherSpeed * 500);
-
+            if(!speedIsPreset){
+                launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
+                launcherSpeed = 1850 + ( launcherSpeed * 500);
+            }
+            
             m_launcher.setSpeedRPM(launcherSpeed);
             m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
             m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed: " + launcherSpeed + "                 ");

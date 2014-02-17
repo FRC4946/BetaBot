@@ -57,8 +57,6 @@ public class IntakeArm {
             m_solenoidCounter = RobotConstants.SOLENOID_COOLDOWN_TIME;
 
         } else {
-            //Retracting, so stop the motor for safety
-            setEnabledRollers(false);
 
             //And retract the arm
             m_extendGrabberSolenoid.set(false);
@@ -102,7 +100,7 @@ public class IntakeArm {
         motorsAreEnabled = isEnabled;
 
         if (isEnabled) {
-            m_intakeController.set(1.0);
+            m_intakeController.set(0.8);
         } else {
             m_intakeController.set(0.0);
         }
