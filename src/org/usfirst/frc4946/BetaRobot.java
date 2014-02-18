@@ -38,9 +38,9 @@ public class BetaRobot extends SimpleRobot {
     Compressor m_primaryCompressor = new Compressor(RobotConstants.COMPRESSOR_PRESSURE_SWITCH, RobotConstants.COMPRESSOR_RELAY);
 
     boolean buttonIntakeRollerIsDown = false;
-    boolean intakeIsRear = true;
+    boolean intakeIsRear = false;
     public boolean modeRPM = true;
-    
+
     double launcherSpeed = 0.0;
     double oldLauncherSpeed = 0.0;
     boolean speedIsPreset = false;
@@ -49,7 +49,7 @@ public class BetaRobot extends SimpleRobot {
     protected void robotInit() {
         // Start the compressor, let it do it's thing. It will turn on and off automatically to regulate pressure.
         m_primaryCompressor.start();
-        
+
     }
 
     /**
@@ -60,7 +60,7 @@ public class BetaRobot extends SimpleRobot {
         // Set the speed of the motors on the launcher and intake
         //m_intakeArm.setSpeedOpenLoop(12);
         m_launcher.setSpeedOpenLoop(3);
-        
+
     }
 
     /**
@@ -70,19 +70,20 @@ public class BetaRobot extends SimpleRobot {
 
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous                    ");
         m_driverStation.updateLCD();
-        
-        AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+
+        AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        //AutoShootAndDrive m_routine = new AutoShootAndDrive(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         //AutoMove m_routine = new AutoMove(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         int m_cycleNumber = 0;
         m_routine.init();
-        
+
         while (isAutonomous() && isEnabled()) {
-            
+
             m_cycleNumber++;
             m_routine.run();
-            
+
             if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
-                  
+
                 m_driverStation.updateLCD();
                 m_cycleNumber = 0;
             }
@@ -112,18 +113,16 @@ public class BetaRobot extends SimpleRobot {
             //Call the task oriented code
             operatorTaskSystem();
 
-            m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs()+ "\"            ");
+            m_driverStation.println(RobotConstants.LCD_RANGE, 1, "Range: " + m_distanceSensor.getRangeInchs() + "\"            ");
 
             if ((m_cycleNumber % RobotConstants.CONSOLE_UPDATE_TIME) == 0) {
-                  
+
                 m_driverStation.updateLCD();
                 m_cycleNumber = 0;
             }
 
         }
 
-                
-        
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Stopping operator control           ");
         m_driverStation.updateLCD();
 
@@ -139,7 +138,7 @@ public class BetaRobot extends SimpleRobot {
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_INTAKE_OUT)) {
 
             m_intakeArm.setExtended(true);
-            
+
         }
 
         // Retract and turn off the intake arm
@@ -164,20 +163,18 @@ public class BetaRobot extends SimpleRobot {
                 m_intakeArm.toggleEnabled();
             }
         }
-        
+
         //********* LOADER *********\\
         // If the trigger is down, lift the ball into the rollers		
         m_loader.setExtended(m_driveJoystick.getTrigger());
         m_loader.updateSolenoids();
-        
-        
+
         //********* LAUNCHER *********\\
         // If the launch button is pressed, get ready for its release
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_ON)) {
-            if(modeRPM){
-                 m_launcher.setOpenLoopEnabled(true);
-            }
-            else{
+            if (modeRPM) {
+                m_launcher.setOpenLoopEnabled(true);
+            } else {
                 m_launcher.setClosedLoopEnabled(true);
             }
             m_intakeArm.setExtended(true); // Extend the intake arm, just in case
@@ -185,10 +182,9 @@ public class BetaRobot extends SimpleRobot {
 
         // If the launch button is released, toggle the state of the solenoid
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_OFF)) {
-            if(modeRPM){
-                 m_launcher.setOpenLoopEnabled(false);
-            }
-            else{
+            if (modeRPM) {
+                m_launcher.setOpenLoopEnabled(false);
+            } else {
                 m_launcher.setClosedLoopEnabled(false);
             }
         }
@@ -197,39 +193,37 @@ public class BetaRobot extends SimpleRobot {
             modeRPM = true;
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_VOLTAGE_MODE)) {
             modeRPM = false;
-            
+
         }
-        
+
         // If the slider has been changed, disable the preset
-        if(speedIsPreset && m_taskJoystick.getZ() != oldLauncherSpeed){
-          speedIsPreset = false;
+        if (speedIsPreset && m_taskJoystick.getZ() != oldLauncherSpeed) {
+            speedIsPreset = false;
         }
-        
+
         // Set the speed to the presets
-        if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE)){
+        if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE)) {
             modeRPM = true;
-            launcherSpeed = 1400;
+            launcherSpeed = 700;
+            speedIsPreset = true;
+        } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO)) {
+            modeRPM = true;
+            launcherSpeed = 750;
+            speedIsPreset = true;
+            m_intakeArm.setEnabledRollersReverse(true);
+        } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE)) {
+            modeRPM = true;
+            launcherSpeed = 800;
             speedIsPreset = true;
         }
-        else if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO)){
-            modeRPM = true;
-            launcherSpeed = 1450;
-            speedIsPreset = true;
-        }
-        else if(m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE)){
-            modeRPM = true;
-            launcherSpeed = 1500;
-            speedIsPreset = true;
-        }
-        
+
         // If the speed was not last set using the preset buttons, read from the slider
-        if(!speedIsPreset){
+        if (!speedIsPreset) {
             // Set the launcher speed to the Z val, and then update the motors
             launcherSpeed = m_taskJoystick.getZ();
             oldLauncherSpeed = launcherSpeed;
         }
-        
-        
+
         // Set the speed of the motors
         if (modeRPM == false) {
             launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
@@ -240,21 +234,20 @@ public class BetaRobot extends SimpleRobot {
             m_launcher.setOpenLoopEnabled(m_launcher.isEnabled());
             m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed: " + launcherSpeed + "                 ");
 
-        }
-        else if (modeRPM == true) {
-            if(!speedIsPreset){
+        } else if (modeRPM == true) {
+            if (!speedIsPreset) {
                 launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
-                launcherSpeed = 1850 + ( launcherSpeed * 500);
+                launcherSpeed = 1850 + (launcherSpeed * 500);
             }
-            
+
             m_launcher.setSpeedRPM(launcherSpeed);
             m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
             m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed: " + launcherSpeed + "                 ");
-            
+
         }
-        
+
         m_launcher.update();
-     
+
     }
 
     /**
@@ -263,19 +256,19 @@ public class BetaRobot extends SimpleRobot {
      */
     private void operatorDriveSystem() {
 
-         // Set the launcher speed to the Z val, and then update the motors
+        // Set the launcher speed to the Z val, and then update the motors
         double driveSpeed = m_driveJoystick.getThrottle();
 
         driveSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
         driveSpeed = (driveSpeed + 1) / 2;    // Shift to (0,1)
-        
+
         //Drive the robot with either better turning, or maximum speed depending on the trigger.
         double outputMagnitude = m_driveJoystick.getY();
         double curve = m_driveJoystick.getX();
 
         outputMagnitude = outputMagnitude * (0.5 + 0.5 * driveSpeed); // 0.5 to 1.0
-        curve = curve * (0.7 + 0.2 * driveSpeed); // 0.7 to 0.9
-       
+        curve = (curve * (0.7 + 0.2 * driveSpeed)) + 0.001; // 0.7 to 0.9
+
 //        if (m_driveJoystick.getTrigger()) {
 //            //allow fast speed, but reduce turning
 //            outputMagnitude *= 1.0;
@@ -287,7 +280,6 @@ public class BetaRobot extends SimpleRobot {
 //            curve *= 0.7;
 //
 //        }
-
         // Set the orientation (which way is front)
         if (m_driveJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_SHOOT_ORIENTATION)) {
             intakeIsRear = true;

@@ -47,14 +47,14 @@ public class AutoShootAndDrive extends AutoMode {
            m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING                       ");
         }
 
-        if (step == 1 && counter>30) {
+        if (step == 1 && counter>70) {
             m_loader.setExtended(false);
             step=2;
             counter=0;
         }
         
         if(step == 2 && counter>100){
-            driveToDistance(8 * 12, 0.4);
+            //driveToDistance(8 * 12, 0.4);
         }
         
         if (atDistance(8 * 12) && step == 2) {

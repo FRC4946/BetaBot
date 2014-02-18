@@ -46,7 +46,7 @@ public class AutoTwoBall extends AutoMode {
            m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING 1                       ");
         }
 
-        if (step == 1 && counter>30) {
+        if (step == 1 && counter>50) {
             m_loader.setExtended(false);
             m_intakeArm.setExtended(true);
             m_intakeArm.setEnabledRollers(true);
@@ -54,14 +54,14 @@ public class AutoTwoBall extends AutoMode {
             counter=0;
         }
         
-        if (step == 2 && shooterIsAtTargetSpeed(1750) && counter > 30) {
-           m_loader.setExtended(true);
+        if (step == 2 && shooterIsAtTargetSpeed(1750) && counter > 450) {
+           //m_loader.setExtended(true);
            step=3;
            counter=0;
            m_driverStation.println(RobotConstants.AUTO_LCD_LOADER, 1, "SHOOTING 2                       ");
         }
 
-        if (step == 3 && counter>30) {
+        if (step == 3 && counter>50) {
             m_loader.setExtended(false);
             m_intakeArm.setEnabledRollers(false);
             step=4;

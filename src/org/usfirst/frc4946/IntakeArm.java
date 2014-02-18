@@ -100,7 +100,18 @@ public class IntakeArm {
         motorsAreEnabled = isEnabled;
 
         if (isEnabled) {
-            m_intakeController.set(0.8);
+            m_intakeController.set(1.0);
+        } else {
+            m_intakeController.set(0.0);
+        }
+
+    }
+    public void setEnabledRollersReverse(boolean isEnabled) {
+
+        motorsAreEnabled = isEnabled;
+
+        if (isEnabled) {
+            m_intakeController.set(-1.0);
         } else {
             m_intakeController.set(0.0);
         }
