@@ -30,19 +30,22 @@ public class RobotConstants {
     public static final int BALL_LIFT_VALVE_RELAY = 3; // The valve to raise the ball lifter. (Purple in the diagram)
     public static final int BALL_LOWER_VALVE_RELAY = 4; // The valve to lower the ball lifter
 
-    //*** Buttons ***\\
-    public static int JOYSTICK_BUTTON_INTAKE_OUT = 6;
-    public static int JOYSTICK_BUTTON_INTAKE_IN = 7;
+    //*** Task joystick ***\\
+    public static int JOYSTICK_BUTTON_INTAKE_ROLLER = 2;
     public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE = 4;
     public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO = 3;
     public static int JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE = 5;
-    public static int JOYSTICK_BUTTON_LAUNCHER_ON = 11;
-    public static int JOYSTICK_BUTTON_LAUNCHER_OFF = 10;
-    public static int JOYSTICK_BUTTON_INTAKE_ROLLER = 2;
-    public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 5;
-    public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 6;
+    public static int JOYSTICK_BUTTON_INTAKE_OUT = 6;
+    public static int JOYSTICK_BUTTON_INTAKE_IN = 7;
     public static int JOYSTICK_BUTTON_RPM_MODE = 8;
     public static int JOYSTICK_BUTTON_VOLTAGE_MODE = 9;
+    public static int JOYSTICK_BUTTON_LAUNCHER_OFF = 10;
+    public static int JOYSTICK_BUTTON_LAUNCHER_ON = 11;
+
+    
+    //*** Drive joystick ***\\
+    public static int JOYSTICK_BUTTON_SHOOT_ORIENTATION = 5;
+    public static int JOYSTICK_BUTTON_INTAKE_ORIENTATION = 6;
 
     //*** Misc ***\\
     public static int SOLENOID_COOLDOWN_TIME = 1000;

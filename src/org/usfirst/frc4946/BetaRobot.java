@@ -71,7 +71,7 @@ public class BetaRobot extends SimpleRobot {
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous                    ");
         m_driverStation.updateLCD();
 
-        AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
         //AutoShootAndDrive m_routine = new AutoShootAndDrive(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         //AutoMove m_routine = new AutoMove(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         int m_cycleNumber = 0;
@@ -224,28 +224,36 @@ public class BetaRobot extends SimpleRobot {
             oldLauncherSpeed = launcherSpeed;
         }
 
-        // Set the speed of the motors
-        if (modeRPM == false) {
-            launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
-            launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
-
-            launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
-            m_launcher.setSpeedOpenLoop(launcherSpeed);
+        
+        // If the trigger is down, brake. Otherwise, set the speed of the motors normally.
+        if (m_taskJoystick.getTrigger()) {
+            m_launcher.setSpeedOpenLoop(0.5);
             m_launcher.setOpenLoopEnabled(m_launcher.isEnabled());
-            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed: " + launcherSpeed + "                 ");
-
-        } else if (modeRPM == true) {
-            if (!speedIsPreset) {
+            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "Braking...                   ");
+        } else {
+            // Open loop  -  Set the speed with voltage
+            if (modeRPM == false) {
                 launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
-                launcherSpeed = 1850 + (launcherSpeed * 500);
+                launcherSpeed = (launcherSpeed + 1) / 2;    // Shift to (0,1)
+
+                launcherSpeed *= RobotConstants.SHOOTER_MAX_VOLTAGE;                       // Scale to max voltage set in constants
+                m_launcher.setSpeedOpenLoop(launcherSpeed);
+                m_launcher.setOpenLoopEnabled(m_launcher.isEnabled());
+                m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "OpenSpeed: " + launcherSpeed + "                 ");
+
+            } else if (modeRPM == true) {
+                // Closed loop  -  Set the speed with a RPM
+                if (!speedIsPreset) {
+                    launcherSpeed *= -1;                        //Flip range from (1, -1) to (-1, 1)
+                    launcherSpeed = 1850 + (launcherSpeed * 500);
+                }
+
+                m_launcher.setSpeedRPM(launcherSpeed);
+                m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
+                m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed: " + launcherSpeed + "                 ");
+
             }
-
-            m_launcher.setSpeedRPM(launcherSpeed);
-            m_launcher.setClosedLoopEnabled(m_launcher.isEnabled());
-            m_driverStation.println(RobotConstants.LCD_DRIVER, 1, "ClosedSpeed: " + launcherSpeed + "                 ");
-
         }
-
         m_launcher.update();
 
     }
