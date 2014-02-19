@@ -27,7 +27,7 @@ public class AutoMoveAndShoot extends AutoMode {
         counter = 0;
         atDistanceCount = 0;
 
-        extendArm();
+        //extendArm();
         m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "EXTENDED ARM            ");
         m_driverStation.updateLCD();
         startShooter(true);
@@ -41,11 +41,11 @@ public class AutoMoveAndShoot extends AutoMode {
         counter++;
         m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs()+"                          ");
         if (step == 0 && counter > 400) {
-            driveToDistance(10 * 12, 0.35);
+            driveToDistance(9 * 12, 0.35);
 
         }
 
-        if (atDistance(10 * 12) && step == 0) {
+        if (atDistance(9 * 12) && step == 0) {
             atDistanceCount++;
             if (atDistanceCount > 2) {
                 drive(0.0, 0.0);

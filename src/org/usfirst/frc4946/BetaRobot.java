@@ -71,9 +71,9 @@ public class BetaRobot extends SimpleRobot {
         m_driverStation.println(RobotConstants.LCD_MODE_MISC, 1, "Entering autonomous                    ");
         m_driverStation.updateLCD();
 
-        AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
+        //AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
         //AutoShootAndDrive m_routine = new AutoShootAndDrive(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
-        //AutoMove m_routine = new AutoMove(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         int m_cycleNumber = 0;
         m_routine.init();
 
@@ -159,9 +159,9 @@ public class BetaRobot extends SimpleRobot {
                 && buttonIntakeRollerIsDown == true) {
 
             buttonIntakeRollerIsDown = false;
-            if (m_intakeArm.getExtendedState()) {
+            
                 m_intakeArm.toggleEnabled();
-            }
+            
         }
 
         //********* LOADER *********\\
@@ -204,16 +204,16 @@ public class BetaRobot extends SimpleRobot {
         // Set the speed to the presets
         if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_ONE)) {
             modeRPM = true;
-            launcherSpeed = 700;
+            launcherSpeed = 1400;
             speedIsPreset = true;
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_TWO)) {
             modeRPM = true;
-            launcherSpeed = 750;
+            launcherSpeed = 1500;
             speedIsPreset = true;
-            m_intakeArm.setEnabledRollersReverse(true);
+           // m_intakeArm.setEnabledRollersReverse(true);
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE)) {
             modeRPM = true;
-            launcherSpeed = 800;
+            launcherSpeed = 1750;
             speedIsPreset = true;
         }
 
