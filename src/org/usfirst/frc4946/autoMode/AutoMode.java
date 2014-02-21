@@ -2,10 +2,15 @@
  * This is the master autonomous class
  * Every other auto class inherits from this
  */
-package org.usfirst.frc4946;
+package org.usfirst.frc4946.autoMode;
 
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.RobotDrive;
+import org.usfirst.frc4946.DistanceSensor;
+import org.usfirst.frc4946.IntakeArm;
+import org.usfirst.frc4946.Launcher;
+import org.usfirst.frc4946.Loader;
+import org.usfirst.frc4946.RobotConstants;
 
 /**
  *
