@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc4946.closedLoop.BangBangControl;
-import org.usfirst.frc4946.closedLoop.PIDControl;
+import org.usfirst.frc4946.closedLoop.BangBangTimerControl;
 import org.usfirst.frc4946.closedLoop.VelocityControl;
 
 public class Launcher {
@@ -19,8 +19,9 @@ public class Launcher {
     private final RateCounter m_launcherBottomCounter = new RateCounter(RobotConstants.HALL_SENSOR_BOT);
 
     //-------------------------------
-    VelocityControl m_topVelocity = new BangBangControl(m_launcherTopCounter, m_launcherTopController);
-    VelocityControl m_bottomVelocity = new BangBangControl(m_launcherBottomCounter, m_launcherBottomController);
+    //Changed to use the timer version. Tighter control of RPM?
+    VelocityControl m_topVelocity = new BangBangTimerControl(m_launcherTopCounter, m_launcherTopController);
+    VelocityControl m_bottomVelocity = new BangBangTimerControl(m_launcherBottomCounter, m_launcherBottomController);
          
     //Alternate control
     //VelocityControl m_topVelocity = new PIDControl(m_launcherTopCounter, m_launcherTopController);

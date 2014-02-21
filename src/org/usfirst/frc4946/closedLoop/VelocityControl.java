@@ -24,29 +24,30 @@ public abstract class VelocityControl {
     abstract public void enable(boolean enable);
     
     abstract public void update();
+    
     protected boolean m_isReversed = false;
     
     public void setIsReversed(boolean reversed){
-        
         m_isReversed= reversed;
         
     }
+    
     public VelocityControl( RateCounter counter, SpeedController ctrl){
         m_counter = counter;
         m_speedControl = ctrl;    
         
     }
 
-    public double getTargetSpeed() {
+    public synchronized double getTargetSpeed() {
         return m_targetRPM;
     }
 
-    public void setTargetRPM(double speed) {
+    public synchronized void setTargetRPM(double speed) {
         this.m_targetRPM = speed;
         
     }
         
-    public double getCurrentRPM(){
+    public synchronized double getCurrentRPM(){
         return m_counter.getRPM();
         
     }
