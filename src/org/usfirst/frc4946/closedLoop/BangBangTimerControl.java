@@ -19,7 +19,7 @@ public class BangBangTimerControl extends VelocityControl {
     private final DriverStation m_driverStation = DriverStation.getInstance();
     private boolean m_enabled = false;
 
-    private final long m_periodMSec = 10;
+    private final long m_periodMSec = 5;
     java.util.Timer m_controlLoop;
 
     public BangBangTimerControl(RateCounter counter, SpeedController ctrl) {

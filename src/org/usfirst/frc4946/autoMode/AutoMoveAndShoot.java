@@ -12,6 +12,7 @@ import org.usfirst.frc4946.IntakeArm;
 import org.usfirst.frc4946.Launcher;
 import org.usfirst.frc4946.Loader;
 import org.usfirst.frc4946.RobotConstants;
+import edu.wpi.first.wpilibj.Gyro;
 
 /**
  *
@@ -22,6 +23,7 @@ public class AutoMoveAndShoot extends AutoMode {
     //AutoMode autoRoutine = new AutoMode(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
     int step = 0;
     int counter = 0;
+    int atDistanceCount = 0;
 
     public AutoMoveAndShoot(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
         super(drive, launcher, loader, intakeArm, distanceSensor);
@@ -32,21 +34,19 @@ public class AutoMoveAndShoot extends AutoMode {
         counter = 0;
         atDistanceCount = 0;
 
-        //extendArm();
-        m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "EXTENDED ARM            ");
-        m_driverStation.updateLCD();
+        retractArm();
+
         startShooter(true);
         setShooterSpeed(1425, true);
-        m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "SHOOTER ON 1800               ");
+        m_driverStation.println(RobotConstants.AUTO_LCD_LAUNCHER, 1, "SHOOTER ON 1425               ");
     }
-    int atDistanceCount = 0;
 
     public void run() {
         m_launcher.update();
         counter++;
         m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs()+"                          ");
         if (step == 0 && counter > 400) {
-            driveToDistance(9 * 12, 0.35);
+            driveToDistance(9 * 12, 0.4);
 
         }
 

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
+import org.usfirst.frc4946.autoMode.AutoMove;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -74,7 +75,8 @@ public class BetaRobot extends SimpleRobot {
 
         //AutoTwoBall m_routine = new AutoTwoBall(m_robotDrive, m_launcher, m_loader, m_intakeArm, m_distanceSensor);
         //AutoShootAndDrive m_routine = new AutoShootAndDrive(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
-        AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        //AutoMoveAndShoot m_routine = new AutoMoveAndShoot(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
+        AutoMove m_routine = new AutoMove(m_robotDrive,m_launcher,m_loader,m_intakeArm,m_distanceSensor);
         int m_cycleNumber = 0;
         m_routine.init();
 
@@ -214,7 +216,8 @@ public class BetaRobot extends SimpleRobot {
            // m_intakeArm.setEnabledRollersReverse(true);
         } else if (m_taskJoystick.getRawButton(RobotConstants.JOYSTICK_BUTTON_LAUNCHER_PRESET_THREE)) {
             modeRPM = true;
-            launcherSpeed = 1750;
+            //launcherSpeed = 1750;
+            launcherSpeed = 3000;
             speedIsPreset = true;
         }
 
@@ -278,6 +281,9 @@ public class BetaRobot extends SimpleRobot {
         outputMagnitude = outputMagnitude * (0.5 + 0.5 * driveSpeed); // 0.5 to 1.0
         curve = (curve * (0.7 + 0.2 * driveSpeed)) + 0.001; // 0.7 to 0.9
 
+        
+        m_driverStation.println(RobotConstants.LCD_LOADER, 1, "Curve: "+curve+"                      ");
+        
 //        if (m_driveJoystick.getTrigger()) {
 //            //allow fast speed, but reduce turning
 //            outputMagnitude *= 1.0;

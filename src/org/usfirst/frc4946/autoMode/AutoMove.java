@@ -26,10 +26,10 @@ public class AutoMove extends AutoMode {
     }
 
     public void run() {
-        driveToDistance(12*12, 0.4);
+        driveToDistance(5*12, 0.4);
         m_driverStation.println(RobotConstants.AUTO_LCD_DRIVER, 1, "Driving to 12 ft at 0.4        ");
         
-        if (atDistance(12*12)) {
+        if (atDistance(5*12)) {
             //celebrate we drove distance
             m_driverStation.println(RobotConstants.AUTO_LCD_DRIVER, 1, "AT DIST 12ft                  ");
             extendLoader();

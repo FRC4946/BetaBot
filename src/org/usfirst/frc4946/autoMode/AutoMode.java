@@ -42,7 +42,8 @@ public abstract class AutoMode {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
         if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            drive(speed, -0.0005);
+            //drive(speed, -0.0005);
+            drive(speed, 0);
         }
         //if (currentDistance <= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
           //  drive(-speed, 0);
@@ -106,6 +107,11 @@ public abstract class AutoMode {
 
     public void extendArm() {
         m_intakeArm.setExtended(true);
+        m_intakeArm.updateSolenoids();
+    }
+    
+    public void retractArm() {
+        m_intakeArm.setExtended(false);
         m_intakeArm.updateSolenoids();
     }
 
