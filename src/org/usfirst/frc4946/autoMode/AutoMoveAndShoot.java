@@ -30,6 +30,9 @@ public class AutoMoveAndShoot extends AutoMode {
     }
 
     public void init() {
+        
+        initGyroSensor();
+        
         step = 0;
         counter = 0;
         atDistanceCount = 0;

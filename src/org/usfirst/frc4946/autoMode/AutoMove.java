@@ -22,7 +22,7 @@ public class AutoMove extends AutoMode {
     }
 
     public void init() {
-        
+        initGyroSensor();
     }
 
     public void run() {

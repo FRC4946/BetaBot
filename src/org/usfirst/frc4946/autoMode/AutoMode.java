@@ -34,10 +34,12 @@ public abstract class AutoMode {
         m_loader = loader;
         m_intakeArm = intakeArm;
         m_distanceSensor = distanceSensor;
-        
-        m_gyro.reset();
     }
 
+    public void initGyroSensor() {
+        m_gyro.reset();
+    }
+    
     protected boolean shooterIsAtTargetSpeed(double speed) {
         return getCurrentShooterSpeed() >= (speed-50) && getCurrentShooterSpeed() <= (speed+50);
 
