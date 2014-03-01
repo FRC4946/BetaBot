@@ -5,6 +5,7 @@
 package org.usfirst.frc4946.autoMode;
 
 import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import org.usfirst.frc4946.DistanceSensor;
 import org.usfirst.frc4946.IntakeArm;
@@ -24,6 +25,8 @@ public abstract class AutoMode {
     IntakeArm m_intakeArm;
     DistanceSensor m_distanceSensor;
     protected DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
+    
+    Gyro m_gyro = new Gyro(RobotConstants.GYRO_SENSOR);
 
     AutoMode(RobotDrive drive, Launcher launcher, Loader loader, IntakeArm intakeArm, DistanceSensor distanceSensor) {
         m_robotDrive = drive;
@@ -42,8 +45,11 @@ public abstract class AutoMode {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
         if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            //drive(speed, -0.0005);
-            drive(speed, 0);
+            m_gyro.reset();
+            double angle = m_gyro.getAngle();
+            double correctedAngle = angle*-0.03;
+            
+            drive(speed, correctedAngle);
         }
         //if (currentDistance <= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
           //  drive(-speed, 0);

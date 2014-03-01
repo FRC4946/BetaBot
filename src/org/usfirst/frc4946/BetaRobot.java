@@ -35,6 +35,7 @@ public class BetaRobot extends SimpleRobot {
 
     DriverStationLCD m_driverStation = DriverStationLCD.getInstance();
 
+    
     // The first arg is the pressure switch, which will open at 115 psi and reclose at 95. It's value will be used to activate and deactivate the relay.
     // The second is the compressor's relay (The Spike module). It is what turns on and off the compressor.
     Compressor m_primaryCompressor = new Compressor(RobotConstants.COMPRESSOR_PRESSURE_SWITCH, RobotConstants.COMPRESSOR_RELAY);
