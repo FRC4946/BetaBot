@@ -34,6 +34,8 @@ public abstract class AutoMode {
         m_loader = loader;
         m_intakeArm = intakeArm;
         m_distanceSensor = distanceSensor;
+        
+        m_gyro.reset();
     }
 
     protected boolean shooterIsAtTargetSpeed(double speed) {
@@ -45,7 +47,6 @@ public abstract class AutoMode {
         double currentDistance = m_distanceSensor.getRangeInchs();
 
         if (currentDistance >= distance && RobotConstants.DISTANCE_SENSOR_RANGE <= Math.abs(currentDistance - distance)) {
-            m_gyro.reset();
             double angle = m_gyro.getAngle();
             double correctedAngle = angle*-0.03;
             
