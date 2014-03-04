@@ -20,8 +20,8 @@ public class Launcher {
 
     //-------------------------------
     //Changed to use the timer version. Tighter control of RPM?
-    VelocityControl m_topVelocity = new BangBangTimerControl(m_launcherTopCounter, m_launcherTopController);
-    VelocityControl m_bottomVelocity = new BangBangTimerControl(m_launcherBottomCounter, m_launcherBottomController);
+    VelocityControl m_topVelocity = new BangBangControl(m_launcherTopCounter, m_launcherTopController);
+    VelocityControl m_bottomVelocity = new BangBangControl(m_launcherBottomCounter, m_launcherBottomController);
          
     //Alternate control
     //VelocityControl m_topVelocity = new PIDControl(m_launcherTopCounter, m_launcherTopController);

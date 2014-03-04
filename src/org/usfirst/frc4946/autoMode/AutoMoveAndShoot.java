@@ -12,7 +12,6 @@ import org.usfirst.frc4946.IntakeArm;
 import org.usfirst.frc4946.Launcher;
 import org.usfirst.frc4946.Loader;
 import org.usfirst.frc4946.RobotConstants;
-import edu.wpi.first.wpilibj.Gyro;
 
 /**
  *
@@ -31,7 +30,7 @@ public class AutoMoveAndShoot extends AutoMode {
 
     public void init() {
         
-        initGyroSensor();
+        //initGyroSensor();
         
         step = 0;
         counter = 0;
@@ -48,7 +47,7 @@ public class AutoMoveAndShoot extends AutoMode {
         m_launcher.update();
         counter++;
         m_driverStation.println(RobotConstants.AUTO_LCD_INTAKE, 1, "Dist " + m_distanceSensor.getRangeInchs()+"                          ");
-        if (step == 0 && counter > 400) {
+        if (step == 0) {
             driveToDistance(9 * 12, 0.4);
 
         }
