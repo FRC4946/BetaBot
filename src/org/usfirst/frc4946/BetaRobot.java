@@ -6,14 +6,13 @@
 /*----------------------------------------------------------------------------*/
 package org.usfirst.frc4946;
 
-import org.usfirst.frc4946.autoMode.AutoMoveAndShoot;
+import org.usfirst.frc4946.autoMode.*;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import org.usfirst.frc4946.autoMode.AutoMove;
 
 /**
  * The VM is configured to automatically run this class, and to call the
